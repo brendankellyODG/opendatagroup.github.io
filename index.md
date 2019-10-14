@@ -37,9 +37,9 @@ Please note: as of October 2019 and Version 2, ModelOp Center is the new name fo
 ### Reference
 
 #### Interfacing with ModelOp Center
-- [ModelOp Center SDKs](/Reference/ModelOp Center SDKs/)
-- [ModelOp Center API](/Reference/ModelOp Center API/)
-- [ModelOp Center CLI](/Reference/ModelOp Center CLI/)
+- [ModelOp Center SDKs](/Reference/FastScore SDKs/)
+- [ModelOp Center API](/Reference/Fastscore API/)
+- [ModelOp Center CLI](/Reference/Fastscore CLI/)
 
 #### Configurations and Advanced Functionality
 

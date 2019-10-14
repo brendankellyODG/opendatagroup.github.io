@@ -2,7 +2,7 @@
 
 In this example, we'll build a simple microservice dashboard using
 [Swagger Codegen](https://swagger.io/swagger-codegen/)
-and the FastScore SDK. Our microservice will perform two functions: it will
+and the ModelOp Center SDK. Our microservice will perform two functions: it will
 provide an at-a-glance summary of the current state of all running engines, and
 it will retrieve the source code of the models running on each engine.
 
@@ -149,7 +149,7 @@ If you try running the server (e.g. with `python3 -m swagger_server`), and
 navigate to `http://localhost:8123`, you should now see an empty page listing
 no engines.
 
-Using the FastScore SDK, it's easy to retrieve a list of engine objects:
+Using the ModelOp Center SDK, it's easy to retrieve a list of engine objects:
 ```python
 from fastscore.suite import Connect
 c = Connect(proxy_prefix="https://localhost:8000")
@@ -183,7 +183,7 @@ def get_index():
     return render_template('index.html', engines = engine_data)
 ```
 
-So far, we've assumed that the FastScore fleet proxy is accessible at `https://localhost:8000`.
+So far, we've assumed that the ModelOp Center fleet proxy is accessible at `https://localhost:8000`.
 This may not always be the case, so for convenience, we can retrieve this information
 from an environment variable. Add `import os` to this script's import statements.
 Then, define a function to retrieve the proxy prefix with:
@@ -240,7 +240,7 @@ curl http://localhost:8123/engine-2/model
 To complete this example, let's package up our microservice as a Docker container.
 Conveniently, there's already a Dockerfile generated for us by Swagger-Codegen,
 located in the `myserver` directory. We'll need to add the following lines to it
-to install the FastScore SDK:
+to install the ModelOp Center SDK:
 ```bash
 WORKDIR /usr/src/app
 RUN apk add --update openssl

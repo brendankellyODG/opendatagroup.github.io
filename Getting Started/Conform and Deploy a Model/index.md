@@ -249,8 +249,9 @@ In the next step, we will use the CLI to generate two arbitrary REST endpoints f
 }
 ``
 
-```ModelOp Center stream add <stream-name> <file-name>
-ModelOp Center stream add rest library/streams/rest.json
+```
+fastscore stream add <stream-name> <file-name>
+fastscore stream add rest library/streams/rest.json
 ```
 
 ## <a name="Deploy-as-REST"></a>Deploy as REST

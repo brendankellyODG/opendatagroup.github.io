@@ -202,7 +202,7 @@ Loading our GBR model to ModelOp Center can be broken into two steps: preparing 
 
 In the previous section, we created a small Python script to score our incoming auto records using the trained gradient boosting regressor and our custom feature transformer. In this example, the training of the model has already been done, so we'll only need to adapt the trained model to produce scores.
 
-As discussed in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp Center/), Python models in ModelOp Center must deliver scores using an `action` method. Note that the `action` method operates as a generator, so scores are obtained from `yield` statements, rather than `return` statements. Additionally, because we don't want to re-load our trained model with every score, we'll define a `begin` method to do all of the model initialization. If a model defines a `begin` method, this method will be called at the start of the job.
+As discussed in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/), Python models in ModelOp Center must deliver scores using an `action` method. Note that the `action` method operates as a generator, so scores are obtained from `yield` statements, rather than `return` statements. Additionally, because we don't want to re-load our trained model with every score, we'll define a `begin` method to do all of the model initialization. If a model defines a `begin` method, this method will be called at the start of the job.
 
 After these alterations, our model looks like this:
 
@@ -443,7 +443,7 @@ And that's it! Once you're done, stop the job with `fastscore job stop`.
 
 ## Source code for this Example
 
-[Download the source files for this example (GBM_example.tar.gz).](https://github.com/opendatagroup/ModelOp Center-tutorials/raw/master/GBM_example.tar.gz)
+[Download the source files for this example (GBM_example.tar.gz).](https://github.com/opendatagroup/ModelOp%20Center-tutorials/raw/master/GBM_example.tar.gz)
 
 This archive contains all of the code used in this example.
 

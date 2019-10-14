@@ -149,9 +149,9 @@ S3 stream:
 
 # Configuration Persistence
 
-Upon startup, the Connect service checks for a `fastscore_CONFIG` environment variable.  If present, it uses the contents of this variable to set ModelOp Center's initial configuration.
+Upon startup, the Connect service checks for a `FASTSCORE_CONFIG` environment variable.  If present, it uses the contents of this variable to set ModelOp Center's initial configuration.
 
-fastscore_CONFIG can be set right in a docker-compose file:
+FASTSCORE_CONFIG can be set right in a docker-compose file:
 ```
 ...
   connect: 
@@ -160,7 +160,7 @@ fastscore_CONFIG can be set right in a docker-compose file:
         - "8001:8001"
     stdin_open: true
     environment: 
-       fastscore_CONFIG: |
+       FASTSCORE_CONFIG: |
         fastscore: 
           fleet: 
             - api: model-manage
