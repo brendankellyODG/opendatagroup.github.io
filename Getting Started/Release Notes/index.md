@@ -32,7 +32,7 @@ Enhanced the core logging framework to leverage the ELK (Elasticsearch, Logstash
 
 * [HDFS Native Stream](https://opendatagroup.github.io/Product%Manuals/Stream%Descriptors/#section-hdfs)
 * [Ubuntu and Alpine based Engines](https://opendatagroup.github.io/Product%Manuals/Engine)
-* [Kubernetes Support for Conductor](https://opendatagroup.github.io/Product%Manuals/ModelOp Center%Composer)
+* [Kubernetes Support for Conductor](https://opendatagroup.github.io/Product%Manuals/ModelOp%20Center%Composer)
 * General improvements to performance and stability
 
 ## Release v1.8
