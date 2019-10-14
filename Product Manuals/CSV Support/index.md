@@ -1,7 +1,7 @@
 
 # CSV support
 
-FastScore supports CSV data format as described in [RFC 4180](https://tools.ietf.org/html/rfc4180)
+ModelOp Center supports CSV data format as described in [RFC 4180](https://tools.ietf.org/html/rfc4180)
 with some extensions, such as a custom quote character.
 
 You can set the CSV encoding in the stream descriptor as follows:

@@ -2,11 +2,11 @@
 
 In this example, we'll build a simple microservice dashboard using
 [Swagger Codegen](https://swagger.io/swagger-codegen/)
-and the FastScore SDK. Our microservice will perform two functions: it will
+and the ModelOp Center SDK. Our microservice will perform two functions: it will
 provide an at-a-glance summary of the current state of all running engines, and
 it will retrieve the source code of the models running on each engine.
 
-[Download the code for this example.](https://s3-us-west-1.amazonaws.com/fastscore-examples/Microservice-Example.zip)
+[Download the code for this example.](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/Microservice-Example.zip)
 
 Let's start by defining the REST API for this microservice, using Swagger. Our
 microservice will serve an index page and retrieve information about deployed
@@ -16,9 +16,9 @@ models. Here's the specification:
 ```yaml
 swagger: "2.0"
 info:
-    description: "An example FastScore microservice."
+    description: "An example ModelOp Center microservice."
     version: "0.1"
-    title: "My FastScore Microservice"
+    title: "My ModelOp Center Microservice"
 
 paths:
     /:
@@ -80,7 +80,7 @@ from .encoder import JSONEncoder
 if __name__ == '__main__':
     app = connexion.App(__name__, specification_dir='./swagger/')
     app.app.json_encoder = JSONEncoder
-    app.add_api('swagger.yaml', arguments={'title': 'An example FastScore microservice.'})
+    app.add_api('swagger.yaml', arguments={'title': 'An example ModelOp Center microservice.'})
     app.run(port=8080)
 ```
 
@@ -128,7 +128,7 @@ to this controller. For more complicated microservers, custom controllers
 can also be defined, but for this example we'll just modify the default one.
 
 For this example, we've modified a CSS template from [Templated](https://templated.co/)
-to use as our Dashboard. (Download it from [here](https://s3-us-west-1.amazonaws.com/fastscore-examples/Microservice-Example.zip)).
+to use as our Dashboard. (Download it from [here](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/Microservice-Example.zip)).
 
 Add two new directories to the `swagger_server` module (`myserver/swager_server`),
 one called `templates` and the other `static`. The `static` directory will hold
@@ -149,13 +149,13 @@ If you try running the server (e.g. with `python3 -m swagger_server`), and
 navigate to `http://localhost:8123`, you should now see an empty page listing
 no engines.
 
-Using the FastScore SDK, it's easy to retrieve a list of engine objects:
+Using the ModelOp Center SDK, it's easy to retrieve a list of engine objects:
 ```python
-from fastscore.suite import Connect
+from ModelOp Center.suite import Connect
 c = Connect(proxy_prefix="https://localhost:8000")
 engines = [c.get(x.name) for x in c.fleet() if 'engine' in x.name]
 ```
-This produces a list of `fastscore.suite.Engine` objects. This example's dashboard
+This produces a list of `ModelOp Center.suite.Engine` objects. This example's dashboard
 requires three pieces of information: the engine's name, the current model
 running (if any), and the current engine state. We can retrieve this information
 with the following function:
@@ -183,7 +183,7 @@ def get_index():
     return render_template('index.html', engines = engine_data)
 ```
 
-So far, we've assumed that the FastScore fleet proxy is accessible at `https://localhost:8000`.
+So far, we've assumed that the ModelOp Center fleet proxy is accessible at `https://localhost:8000`.
 This may not always be the case, so for convenience, we can retrieve this information
 from an environment variable. Add `import os` to this script's import statements.
 Then, define a function to retrieve the proxy prefix with:
@@ -240,12 +240,12 @@ curl http://localhost:8123/engine-2/model
 To complete this example, let's package up our microservice as a Docker container.
 Conveniently, there's already a Dockerfile generated for us by Swagger-Codegen,
 located in the `myserver` directory. We'll need to add the following lines to it
-to install the FastScore SDK:
+to install the ModelOp Center SDK:
 ```bash
 WORKDIR /usr/src/app
 RUN apk add --update openssl
-RUN wget https://s3-us-west-1.amazonaws.com/fastscore-sdk/fastscore-dev.tar.gz
-RUN pip3 install /usr/src/app/fastscore-dev.tar.gz
+RUN wget https://s3-us-west-1.amazonaws.com/ModelOp Center-sdk/ModelOp Center-dev.tar.gz
+RUN pip3 install /usr/src/app/ModelOp Center-dev.tar.gz
 ```
 
 In total, the Dockerfile should look like this:
@@ -265,8 +265,8 @@ COPY . /usr/src/app
 
 WORKDIR /usr/src/app
 RUN apk add --update openssl
-RUN wget https://s3-us-west-1.amazonaws.com/fastscore-sdk/fastscore-dev.tar.gz
-RUN pip3 install /usr/src/app/fastscore-dev.tar.gz
+RUN wget https://s3-us-west-1.amazonaws.com/ModelOp Center-sdk/ModelOp Center-dev.tar.gz
+RUN pip3 install /usr/src/app/ModelOp Center-dev.tar.gz
 
 EXPOSE 8080
 
@@ -278,15 +278,15 @@ CMD ["-m", "swagger_server"]
 Finally, build the Dockerfile with the following command from inside the `myserver`
 directory:
 ```
-docker build -t fastscore-examples/microservice .
+docker build -t ModelOp Center-examples/microservice .
 ```
 
 and run it with, for example,
 ```
-docker run --net=host fastscore-examples/microservice
+docker run --net=host ModelOp Center-examples/microservice
 ```
 
 You can download the entire project file for this example using the following
 link:
 
-* [Microservice Example Project](https://s3-us-west-1.amazonaws.com/fastscore-examples/Microservice-Example.zip)
+* [Microservice Example Project](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/Microservice-Example.zip)

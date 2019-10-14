@@ -4,7 +4,7 @@ excerpt: "New in v1.5!"
 ---
 # Java Model Runner
 
-Beginning with v1.5, FastScore supports models written in the Java language. This includes the following types of models:
+Beginning with v1.5, ModelOp Center supports models written in the Java language. This includes the following types of models:
 
 * Generic Java code
 * POJOs exported from H2O
@@ -14,7 +14,7 @@ This page describes how to load and run models in each of these cases.
 
 ## Generic Java models
 
-A generic Java model can execute arbitrary Java code. In order to run this model in FastScore, it must implement a particular model interface: the `IJavaModel` interface. This interface includes `begin`, `action`, and `end` methods, analogous to Python and R models. 
+A generic Java model can execute arbitrary Java code. In order to run this model in ModelOp Center, it must implement a particular model interface: the `IJavaModel` interface. This interface includes `begin`, `action`, and `end` methods, analogous to Python and R models. 
 
 ``` java
 import fastscore.IJavaModel;
@@ -42,16 +42,16 @@ public class MyModel implements IJavaModel
 
 ## H2O Models
 
-Although an H2O model can be structured as a generic Java model, FastScore also provides a convenience feature to allow direct import of H2O models. In order to use this feature, take the following steps:
+Although an H2O model can be structured as a generic Java model, ModelOp Center also provides a convenience feature to allow direct import of H2O models. In order to use this feature, take the following steps:
 
-1. Save your model as POJO (following the [POJO quick start instructions from H2O](https://h2o-release.s3.amazonaws.com/h2o/rel-turing/1/docs-website/h2o-docs/pojo-quick-start.html)). Without further modifications, this exported POJO can be used as the model code in FastScore.
-2. To load the model in FastScore, ensure that the model name exactly matches the exported POJO class name, and explicitly specify the model type as "`h2o-java`":
+1. Save your model as POJO (following the [POJO quick start instructions from H2O](https://h2o-release.s3.amazonaws.com/h2o/rel-turing/1/docs-website/h2o-docs/pojo-quick-start.html)). Without further modifications, this exported POJO can be used as the model code in ModelOp Center.
+2. To load the model in ModelOp Center, ensure that the model name exactly matches the exported POJO class name, and explicitly specify the model type as "`h2o-java`":
 
 ```
 fastscore model add gbm_pojo_test gbm_pojo_test.java -type:h2o-java
 ```
 
-When running H2O models, FastScore will output the original input record appended with an additional "Result" field that represents an array of prediction results. For example, in H2O's GBM airlines sample model, the input and output will be:
+When running H2O models, ModelOp Center will output the original input record appended with an additional "Result" field that represents an array of prediction results. For example, in H2O's GBM airlines sample model, the input and output will be:
 
 Input JSON record:
 
@@ -69,11 +69,11 @@ Note that the original order of the fields may not be preserved in the output re
 
 ## Spark MLLib models
 
-FastScore v1.5 includes integrated Apache Spark libraries (2.1.1) and allows adding models that leverage Spark MLLib. You can safely use Java import statements for required Spark packages in your model code. 
+ModelOp Center v1.5 includes integrated Apache Spark libraries (2.1.1) and allows adding models that leverage Spark MLLib. You can safely use Java import statements for required Spark packages in your model code. 
 
 A Spark model must follow the same conformance guidelines as a generic Java model, and any previously saved model files/folders (Parquet format) must be added as a model attachment. In general, the model will perform Spark context initialization in the `begin()` method.
 
-Here is an example Spark model that assumes that the `LogisticRegressionModel` was previously created and saved under the `scalaLogisticRegressionWithBFGSModel` folder and then uploaded to FastScore as an attachment.
+Here is an example Spark model that assumes that the `LogisticRegressionModel` was previously created and saved under the `scalaLogisticRegressionWithBFGSModel` folder and then uploaded to ModelOp Center as an attachment.
 
 ``` java
 import fastscore.IJavaModel;
@@ -127,7 +127,7 @@ public class MLLibLRModel implements IJavaModel {
 }
 ```
 
-To add this model to FastScore, run the following commands:
+To add this model to ModelOp Center, run the following commands:
 
 ```
 tar czvf scalaLogisticRegressionWithLBFGSModel.tar.gz scalaLogisticRegressionWithLBFGSModel/

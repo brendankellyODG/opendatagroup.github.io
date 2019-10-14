@@ -1,6 +1,6 @@
 ---
 title: "Build and Test Model Deployment Package"
-description: "How to build and test model deployment package in FastScore"
+description: "How to build and test model deployment package in ModelOp Center"
 ---
 
 

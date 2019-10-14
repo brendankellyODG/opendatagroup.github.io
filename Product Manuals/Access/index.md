@@ -3,7 +3,7 @@ title: "Access"
 ---
 # Access
 
-FastScore Access is provides some basic security, wrapping the FastScore fleet behind an NGINX reverse-proxy, while at the same time providing a few methods for authorizing users.
+ModelOp Center Access is provides some basic security, wrapping the ModelOp Center fleet behind an NGINX reverse-proxy, while at the same time providing a few methods for authorizing users.
 
 To run Access, port 9000 must be exposed, and the `FASTSCORE_PROXY` environment variable must be set to either the `dashboard` or `frontman` proxy:
 

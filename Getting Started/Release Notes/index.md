@@ -1,30 +1,30 @@
 ---
-title: "Release Notes for FastScore"
+title: "Release Notes for ModelOp Center"
 excerpt: ""
 ---
 ## Highlights v1.10
-New capabilities in Release 1.10 further accelerates the deployment process by streamlining model on-boarding into FastScore. Through FastScore’s powerful but lightweight abstractions, data scientists can encapsulate their models for easy deployment through the FastScore System without any re-coding or refactoring.  Release 1.10 streamlines conformance to FastScore’s abstractions for a large number of additional classes of models. Additionally, Release 1.10 adds automated schema inference to allow data scientists to quickly generate the externalized schemas to ensure compatibility of data streams with the model.  
+New capabilities in Release 1.10 further accelerates the deployment process by streamlining model on-boarding into ModelOp Center. Through ModelOp Center’s powerful but lightweight abstractions, data scientists can encapsulate their models for easy deployment through the ModelOp Center System without any re-coding or refactoring.  Release 1.10 streamlines conformance to ModelOp Center’s abstractions for a large number of additional classes of models. Additionally, Release 1.10 adds automated schema inference to allow data scientists to quickly generate the externalized schemas to ensure compatibility of data streams with the model.  
 
 ## What's New
 
 ### Advanced Conformance Approach
 
-Additional “model conformance" approaches to support a larger variety of data scientist workflows and programming paradigms. For particular models, this approach streamlines the process for adding a new model into FastScore by allowing data scientists to simply change their model’s input and output data structures to read from the FastScore engine “slots.” A typical paradigm that data scientists use to structure their code includes: (1) reading in data (2) processing and scoring the data (3) writing the inference out to a consuming application or data feed. Through this feature, data scientists need only make minor modifications to steps 1 and 3, using the intuitive FastScore libraries. Note that FastScore will continue to support the prior “conformance” approaches, which are still well suited for certain classes of models (e.g. explicit RESTful models). This capability includes support for:
+Additional “model conformance" approaches to support a larger variety of data scientist workflows and programming paradigms. For particular models, this approach streamlines the process for adding a new model into ModelOp Center by allowing data scientists to simply change their model’s input and output data structures to read from the ModelOp Center engine “slots.” A typical paradigm that data scientists use to structure their code includes: (1) reading in data (2) processing and scoring the data (3) writing the inference out to a consuming application or data feed. Through this feature, data scientists need only make minor modifications to steps 1 and 3, using the intuitive ModelOp Center libraries. Note that ModelOp Center will continue to support the prior “conformance” approaches, which are still well suited for certain classes of models (e.g. explicit RESTful models). This capability includes support for:
 
 * Languages: Python (others to follow in subsequent dot releases)
-* Local-mode support: support for testing the model in one’s local environment before uploading into a FastScore fleet.
+* Local-mode support: support for testing the model in one’s local environment before uploading into a ModelOp Center fleet.
 
 ### Auto Schema Creation
-Added a schema inference utility to generate the FastScore-compliant data schema automatically from a sample data file. 
+Added a schema inference utility to generate the ModelOp Center-compliant data schema automatically from a sample data file. 
 
 
 ### Go CLI/SDK
 
-Added full support for a Go SDK for core FastScore interactions, allowing data scientists, data engineers, model ops engineers, and others to leverage the rapidly-growing GO language for standard interactions and management of FastScore. We have also used the new Go SDK to improve our CLI so it no longer depends on python implementations, allowing for more portability.
+Added full support for a Go SDK for core ModelOp Center interactions, allowing data scientists, data engineers, model ops engineers, and others to leverage the rapidly-growing GO language for standard interactions and management of ModelOp Center. We have also used the new Go SDK to improve our CLI so it no longer depends on python implementations, allowing for more portability.
 
 ### Enhanced Logging
 
-Enhanced the core logging framework to leverage the ELK (Elasticsearch, Logstash, Kibana) stack, providing system architects and support engineers more flexibility to integrate FastScore’s logging and monitoring capabilities into existing enterprise systems and standards. 
+Enhanced the core logging framework to leverage the ELK (Elasticsearch, Logstash, Kibana) stack, providing system architects and support engineers more flexibility to integrate ModelOp Center’s logging and monitoring capabilities into existing enterprise systems and standards. 
 
 
 
@@ -32,7 +32,7 @@ Enhanced the core logging framework to leverage the ELK (Elasticsearch, Logstash
 
 * [HDFS Native Stream](https://opendatagroup.github.io/Product%Manuals/Stream%Descriptors/#section-hdfs)
 * [Ubuntu and Alpine based Engines](https://opendatagroup.github.io/Product%Manuals/Engine)
-* [Kubernetes Support for Conductor](https://opendatagroup.github.io/Product%Manuals/FastScore%Composer)
+* [Kubernetes Support for Conductor](https://opendatagroup.github.io/Product%Manuals/ModelOp Center%Composer)
 * General improvements to performance and stability
 
 ## Release v1.8
@@ -49,10 +49,10 @@ Enhanced the core logging framework to leverage the ELK (Elasticsearch, Logstash
 
 ## Release v1.7
 
-* FastScore Composer and Designer BETA 
-* FastScore Compare BETA
+* ModelOp Center Composer and Designer BETA 
+* ModelOp Center Compare BETA
 * GitHub Integration
-* Scala FastScore SDK
+* Scala ModelOp Center SDK
 * Import Policy Enhancements
 * General improvements to performance and stability
 

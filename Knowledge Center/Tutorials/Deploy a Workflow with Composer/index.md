@@ -4,16 +4,16 @@
 
 > **WARNING:**
 >
-> Composer is an experimental component in FastScore v1.7, and features may be
+> Composer is an experimental component in ModelOp Center v1.7, and features may be
 > subject to change.
 
-In this example, we'll use FastScore Composer to deploy a multi-model workflow.
+In this example, we'll use ModelOp Center Composer to deploy a multi-model workflow.
 We'll re-use the LSTM model [from the TensorFlow example](../Tensorflow LSTM),
 and add some extra model stages to do pre- and post-processing of the data for
 this model. We'll be using a mixture of Python 3 and R for our models.
 
-FastScore Composer is a tool for building and deploying analytic workflows in
-FastScore. Recall that the LSTM model predicts a CPI-normalized, adjusted
+ModelOp Center Composer is a tool for building and deploying analytic workflows in
+ModelOp Center. Recall that the LSTM model predicts a CPI-normalized, adjusted
 S&P closing price based on the previous 30 days' closing prices. By using Composer,
 we'll take in the raw S&P closing prices and consumer price index (CPI) data,
 produce normalized input for the LSTM model, and then transform the model's output
@@ -24,7 +24,7 @@ back to actual S&P 500 prices. This analytic workflow is depicted below:
 <p align="center"><i>Analytic Workflow</i></p>
 
 The daily S&P 500 closing prices since June 1, 2007, as well as the corresponding
-CPI data, [can be obtained here](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_composer_files.tar.gz).
+CPI data, [can be obtained here](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_composer_files.tar.gz).
 
 ## Contents
 
@@ -72,11 +72,11 @@ respectively, then calculating the adjusted input is easy:
 rescale(sp500, cpi) - reg(date)
 ```
 
-To prepare this preprocessor for FastScore, we'll need to write an R script that
+To prepare this preprocessor for ModelOp Center, we'll need to write an R script that
 can accept asynchronous, heterogeneous inputs from two input streams. Fortunately,
-FastScore provides abstractions for multiple streams that make this easy. When
+ModelOp Center provides abstractions for multiple streams that make this easy. When
 defining an `action` function, just include the `slot` argument in the function
-signature, and then FastScore will automatically supply the slot number (a numeric
+signature, and then ModelOp Center will automatically supply the slot number (a numeric
 identifier of the input stream) along with the input data:
 
 ```R
@@ -144,7 +144,7 @@ example inputs might be:
 {"Date": 20973.0, "CPI": 207.2642}
 ```
 
-FastScore uses an Avro schema system to enforce strong typing on models' inputs
+ModelOp Center uses an Avro schema system to enforce strong typing on models' inputs
 and outputs. The Avro schema for this data is:
 
 ```json
@@ -177,7 +177,7 @@ with Avro schema:
 }
 ```
 
-When deserializing data into R objects, FastScore encodes these records as
+When deserializing data into R objects, ModelOp Center encodes these records as
 lists with named indices. So, for example, the element
 ```
 {"Date": 20968.0, "CPI": 207.234}
@@ -187,7 +187,7 @@ becomes to the R object
 list("Date"=20968.0, "CPI"=207.234)
 ```
 
-In FastScore R, the `emitTo` function can be used to direct output to a particular
+In ModelOp Center R, the `emitTo` function can be used to direct output to a particular
 slot in the engine. So, filling out the `action` function above, we have:
 
 ```R
@@ -221,14 +221,14 @@ action <- function(data, slot){
 ```
 
 
-Putting it all together, here is our FastScore-ready preprocessor R script:
+Putting it all together, here is our ModelOp Center-ready preprocessor R script:
 
 **preprocessor.R**
 ```R
-# fastscore.schema.0: sp500
-# fastscore.schema.2: cpi
-# fastscore.schema.1: double
-# fastscore.schema.3: adjustment
+# ModelOp Center.schema.0: sp500
+# ModelOp Center.schema.2: cpi
+# ModelOp Center.schema.1: double
+# ModelOp Center.schema.3: adjustment
 
 begin <- function(){
     slope <<- 0.0002319547958991928
@@ -314,9 +314,9 @@ script is:
 
 **postprocessor.py**
 ```python
-# fastscore.schema.0: double
-# fastscore.schema.2: adjustment
-# fastscore.schema.1: double
+# ModelOp Center.schema.0: double
+# ModelOp Center.schema.2: adjustment
+# ModelOp Center.schema.1: double
 
 def begin():
     global adjustments, predictions, input_count, input_threshold
@@ -349,20 +349,20 @@ def action(data, slot):
 
 ## Setting up Composer
 
-FastScore Composer is an experimental tool for streamlining the creation and
+ModelOp Center Composer is an experimental tool for streamlining the creation and
 deployment of large, complex analytic workflows. In this example, we have a
 comparatively simple workflow, which serves as a good introduction to Composer's
 functionality.
 
 If you're not interested in manually creating and deploying Composer, feel free
 to skip ahead to the next section---you can
-[download an automation script to perform all configuration here](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_composer_files.tar.gz).
+[download an automation script to perform all configuration here](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_composer_files.tar.gz).
 
-It's easy to deploy FastScore Composer using Docker Compose or Docker Swarm. For
+It's easy to deploy ModelOp Center Composer using Docker Compose or Docker Swarm. For
 this example, we'll use Swarm. Docker Swarm uses the same YAML definition files
 as Docker Compose, so you can re-use the example Docker Compose file from the
-[Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/) or
-download [all the files needed for this step here](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_composer_files.tar.gz).
+[Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp Center/) or
+download [all the files needed for this step here](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_composer_files.tar.gz).
 
 Composer consists of three microservices: Designer (a web GUI), Composer (the
 core component), and Conductor (for interactions with the container orchestration
@@ -371,7 +371,7 @@ Compose file:
 
 ```yaml
 conductor:
-  image: fastscore/conductor-docker:dev
+  image: ModelOp Center/conductor-docker:dev
   ports:
     - "8080:8080"
   volumes:
@@ -380,10 +380,10 @@ conductor:
     - fsnet
   environment:
     MODE: swarm
-    NETWORK: fastscore_fsnet
+    NETWORK: ModelOp Center_fsnet
 
 composer:
-  image: fastscore/composer:dev
+  image: ModelOp Center/composer:dev
   depends_on:
     - proxy
     - connect
@@ -399,7 +399,7 @@ composer:
     KAFKA_SERVERS: kafka:9092
 
 designer:
-  image: fastscore/designer:dev
+  image: ModelOp Center/designer:dev
   ports:
     - "8012:8012"
   networks:
@@ -409,11 +409,11 @@ designer:
 Note that we are deploying all of our services in a custom named network ("fsnet"),
 and that Conductor requires access to the Docker socket on the host machine (
 this is needed to interact with and spawn other containers). Additionally,
-in place of the FastScore Dashboard, we'll use the lightweight "frontman" proxy:
+in place of the ModelOp Center Dashboard, we'll use the lightweight "frontman" proxy:
 
 ```yaml
 proxy:
-  image: fastscore/frontman:dev
+  image: ModelOp Center/frontman:dev
   ports:
     - "8000:8000"
   environment:
@@ -427,32 +427,32 @@ Docker Swarm:
 
 ```
 docker swarm init
-docker stack deploy -c docker-compose.yaml fastscore
+docker stack deploy -c docker-compose.yaml ModelOp Center
 ```
 
 Once deployed, configure the fleet and add all of the assets to Model Manage.
 For example, using the CLI:
 
 ```
-fastscore connect https://localhost:8000 # fleet proxy
-fastscore config set config.yaml
-fastscore fleet -wait
+ModelOp Center connect https://localhost:8000 # fleet proxy
+ModelOp Center config set config.yaml
+ModelOp Center fleet -wait
 
 # Add models
-fastscore model add -type:python3 tf_sp500_lstm tf_sp500_lstm.py
-fastscore attachment upload tf_sp500_lstm attachment.tar.gz
+ModelOp Center model add -type:python3 tf_sp500_lstm tf_sp500_lstm.py
+ModelOp Center attachment upload tf_sp500_lstm attachment.tar.gz
 
-fastscore model add preprocessor preprocessor.R
-fastscore model add postprocessor postprocessor.py
+ModelOp Center model add preprocessor preprocessor.R
+ModelOp Center model add postprocessor postprocessor.py
 
 # Add streams
-fastscore stream add rest rest.json
+ModelOp Center stream add rest rest.json
 
 # Add schemas
-fastscore schema add double double.avsc
-fastscore schema add cpi cpi.avsc
-fastscore schema add sp500 sp500.avsc
-fastscore schema add adjustment adjustment.avsc
+ModelOp Center schema add double double.avsc
+ModelOp Center schema add cpi cpi.avsc
+ModelOp Center schema add sp500 sp500.avsc
+ModelOp Center schema add adjustment adjustment.avsc
 ```
 
 No special configuration commands are necessary for Composer---all relevant settings
@@ -460,10 +460,10 @@ can be controlled via container environment variables.
 
 ## Creating the Workflow in Designer
 
-With the FastScore fleet started and Composer and Designer ready to run, open your
+With the ModelOp Center fleet started and Composer and Designer ready to run, open your
 browser and navigate to the Designer URL (for example, `https://localhost:8012`).
 You may have to add a browser security exception for Designer because, like other
-components in the FastScore fleet, Designer uses self-signed certificates by default.
+components in the ModelOp Center fleet, Designer uses self-signed certificates by default.
 
 Upon accessing Designer, you should see the following display:
 
@@ -471,13 +471,13 @@ Upon accessing Designer, you should see the following display:
 
 The Designer interface consists of a canvas and three menu icons (in the corners
 of the screen). First, we'll use the upper-right gear icon to set some configuration
-options. Click on this icon, and enter the URL of the FastScore fleet proxy
+options. Click on this icon, and enter the URL of the ModelOp Center fleet proxy
 relative to your browser:
 
 ![Designer configuration](images/designer-config.png)
 
 For example, if you can access Designer at `https://localhost:8012`, and you are
-using [the supplied Docker Compose file](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_composer_files.tar.gz), the proxy prefix is
+using [the supplied Docker Compose file](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_composer_files.tar.gz), the proxy prefix is
 `https://localhost:8000/api/1/service`.
 
 If you have not entered a valid proxy prefix, or Designer is otherwise unable to
@@ -497,11 +497,11 @@ asset's source code, and, for models, lets you set other execution options
 
 The TensorFlow LSTM model requires a model environment that contains TensorFlow.
 Fortunately, in [the TensorFlow tutorial](../Tensorflow LSTM/), we have already
-created a custom FastScore engine image with tag `localrepo/engine:tensorflow`.
+created a custom ModelOp Center engine image with tag `localrepo/engine:tensorflow`.
 Set the model to use this environment, and click the save icon to save changes.
 
 With our assets configured and Designer connected to Composer and the rest of the
-FastScore fleet, we're ready to start making our analytic workflow. To build a
+ModelOp Center fleet, we're ready to start making our analytic workflow. To build a
 workflow, just drag and drop assets onto the canvas. Click the "+" button on
 a workflow node to increase the number of possible connections for that node, and
 drag a line between two nodes to connect them. Our workflow should look something
@@ -560,7 +560,7 @@ For now, let's click the "build" button, give our workflow a name, and deploy it
 
 ## Deploy and execute the Workflow
 
-Upon clicking "build" in Designer, the workflow will be passed to Composer, FastScore
+Upon clicking "build" in Designer, the workflow will be passed to Composer, ModelOp Center
 engines will be spawned to handle any models in the workflow, and Composer will
 deploy models to the spawned engines and create internal stream connections to
 handle inter-engine data streams. (By default, Kafka streams are created, but
@@ -570,15 +570,15 @@ Deployment may take a minute or two as new engine containers are created and
 configured. Once the models are deployed, there are a number of different ways
 of delivering data to the workflow.
 
-One of the easiest is using the FastScore CLI:
+One of the easiest is using the ModelOp Center CLI:
 
-To target the CLI at a specific engine, use the `fastscore use` command. For example:
+To target the CLI at a specific engine, use the `ModelOp Center use` command. For example:
 ```
-fastscore use engine-2
+ModelOp Center use engine-2
 ```
 Then, to determine the model active on this engine, enter the command
 ```
-fastscore model inspect
+ModelOp Center model inspect
 ```
 
 This information can also be obtained from the Dashboard. For the purposes of this
@@ -586,23 +586,23 @@ demo, let's assume that the preprocessor model is deployed on `engine-3`, and
 the postprocessor model is depoyed on `engine-1`. Let's first watch the outputs
 from `engine-1`: in a terminal window, enter the commands
 ```
-fastscore use engine-1
-fastscore model output -c
+ModelOp Center use engine-1
+ModelOp Center model output -c
 ```
 This will print any REST output produced by the postprocessor model directly to
 the command line.
 
 Next, in another terminal window, enter the command
 ```
-fastscore use engine-3
+ModelOp Center use engine-3
 ```
-to switch the context back to `engine-3`. We'll use the `fastscore model input`
+to switch the context back to `engine-3`. We'll use the `ModelOp Center model input`
 command to supply data to the preprocessor model.
-Use the `fastscore model input 0` command to enter data in input slot 0
+Use the `ModelOp Center model input 0` command to enter data in input slot 0
 (recall that this is the S&P 500 closing prices).
 Let's enter in the first 35 days of closing prices:
 ```
-head -35 close_prices.jsons | fastscore model input 0
+head -35 close_prices.jsons | ModelOp Center model input 0
 ```
 And then, the first 35 days of CPI data:
 ```
@@ -614,7 +614,7 @@ CPI data.
 With luck, you'll see the model's predictions for days 31 through 35 printed to
 the first terminal window:
 ```
-$ fastscore model output -c
+$ ModelOp Center model output -c
 1554.22092567
 1552.505235
 1553.07839698

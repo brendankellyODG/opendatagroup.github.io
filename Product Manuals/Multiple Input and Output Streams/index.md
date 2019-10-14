@@ -4,7 +4,7 @@ excerpt: "New in v1.6!"
 ---
 # Multiple Input and Output Streams
 
-FastScore Engines now support multiple input and output streams through stream slots. 
+ModelOp Center Engines now support multiple input and output streams through stream slots. 
 
 The Engine has multiple slots to attached streams where the even slot numbers
 starting at 0 are for inputs and the odd slot numbers starting with 1 are for
@@ -23,7 +23,7 @@ for the downstream application and one for the database to store auditing data.
 
 You can freely attach and detach streams to an engine while it is not running.
 While the engine is running you can only replace streams, not detach them
-completely. See [FastScore Command Line Interface](../../Reference/FastScore CLI/).
+completely. See [ModelOp Center Command Line Interface](../../Reference/ModelOp%20Center%20CLI/).
 
 for information on controlling streams with the engine.
 

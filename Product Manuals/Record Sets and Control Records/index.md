@@ -4,7 +4,7 @@ excerpt: "New in v1.10!"
 ---
 # Recordsets and Control Records
 
-To better handle different model types (such as batch models), FastScore models support using **recordsets**. A record set is an ordered collection of records. In R and Python, recordsets are analogous to (and in fact, deserialized into) data frames.
+To better handle different model types (such as batch models), ModelOp Center models support using **recordsets**. A record set is an ordered collection of records. In R and Python, recordsets are analogous to (and in fact, deserialized into) data frames.
 
 ## Models with Recordsets
 
@@ -12,7 +12,7 @@ To configure an R or Python model to use recordsets in its inputs or outputs, ju
 
 ### Output Conventions
 
-There is some ambiguity involved when encoding a record set to an Avro type. To resolve this, FastScore uses the following mapping conventions to determine how to encode each element in the output record set:
+There is some ambiguity involved when encoding a record set to an Avro type. To resolve this, ModelOp Center uses the following mapping conventions to determine how to encode each element in the output record set:
 
 #### In Python:
 
@@ -133,13 +133,13 @@ For example, a valid input stream descriptor for the second example above might 
 
 Additionally, to use recordsets, **control records** have to be injected into the data stream to mark the boundaries of a record set. A control record is a special type of record in the data stream that does not contain input/output data, but instead requests an action to be performed on the stream. 
 
-There are three types of control records currently supported in FastScore:
+There are three types of control records currently supported in ModelOp Center:
 
 1. **end**. The "end" control record marks the end of the input stream. The underlying stream transport may contain more data, but this remaining data is ignored. The behavior mimics what happens when a stream receives an EOF signal from its transport. 
 
 2. **set**. The "set" control record marks the end of a record set, and is how you create a record set-oriented stream, as described above.
 
-3. **pig**. A "pig" control record travels the whole length of the FastScore pipeline. If you inject a "pig" into the input stream, it will appear in the output stream. The purpose of a "pig" is to provide dependency guarantees similar to a memory barrier in a modern CPU---no input records after the "pig" can affect the output records received before the "pig" in the output stream.
+3. **pig**. A "pig" control record travels the whole length of the ModelOp Center pipeline. If you inject a "pig" into the input stream, it will appear in the output stream. The purpose of a "pig" is to provide dependency guarantees similar to a memory barrier in a modern CPU---no input records after the "pig" can affect the output records received before the "pig" in the output stream.
 
 Each control record can declare some common properties:
 

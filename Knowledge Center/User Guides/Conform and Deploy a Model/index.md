@@ -1,6 +1,6 @@
 ---
 title: "Conform and Deploy a Model"
-description: "How to conform and deploy a model in FastScore"
+description: "How to conform and deploy a model in ModelOp Center"
 ---
 
 

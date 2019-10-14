@@ -4,14 +4,14 @@ excerpt: "New in v1.4!"
 ---
 # LDAP Authentication
 
-Starting with FastScore v1.4, the FastScore Dashboard and Proxy support Microsoft Active Directory user authentication using [Vault](https://www.vaultproject.io/). To achieve this functionality, FastScore uses Vault to securely store the Active Directory configuration details. This page describes how to make use of authentication in FastScore.
+Starting with ModelOp Center v1.4, the ModelOp Center Dashboard and Proxy support Microsoft Active Directory user authentication using [Vault](https://www.vaultproject.io/). To achieve this functionality, ModelOp Center uses Vault to securely store the Active Directory configuration details. This page describes how to make use of authentication in ModelOp Center.
 
-## Connecting FastScore to Vault
+## Connecting ModelOp Center to Vault
 
 
 This section assumes you already possess an existing Vault service. If you haven't configured Vault yet, [read the Vault configuration section below](#configuring-vault-in-docker).
 
-Authentication in FastScore is achieved through the Dashboard service. Recall from the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/) that Dashboard is designed to serve as a proxy for the FastScore fleet's REST API, as well as a visual configuration and diagnostic aid. By default, authentication is not enabled in Dashboard. To enable it, set the following environment variables:
+Authentication in ModelOp Center is achieved through the Dashboard service. Recall from the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/) that Dashboard is designed to serve as a proxy for the ModelOp Center fleet's REST API, as well as a visual configuration and diagnostic aid. By default, authentication is not enabled in Dashboard. To enable it, set the following environment variables:
 
 | Name | Default Value | Description |
 | --- | --- | --- |
@@ -28,14 +28,14 @@ As seen from this table, the Dashboard must be provided with the Vault token and
 
 ### Authentication in the CLI
 
-The latest version of the FastScore CLI supports the authentication scheme described above. Usernames and passwords can be passed to the FastScore CLI's `connect` command. For example, the command
+The latest version of the ModelOp Center CLI supports the authentication scheme described above. Usernames and passwords can be passed to the ModelOp Center CLI's `connect` command. For example, the command
 
 ```
 fastscore connect https://dashboard-ip:8000 foo:bar
 ```
 attempts to authenticate with username "foo" and password "bar". If the password is omitted, the user will be prompted to enter it at the command line.
 
-Note that the FastScore CLI will save the authentication secret to the file "`.fastscore`" located in the current working directory. 
+Note that the ModelOp Center CLI will save the authentication secret to the file "`.fastscore`" located in the current working directory. 
 
 ### Authentication with the REST API
 
@@ -198,10 +198,10 @@ Next, add the LDAP configuration information to the Vault. This is the informati
 ```
 docker-compose exec vault vault write secret/ldap-configuration \
 bindCredentials="password" \
-bindDn="CN=mtwain,CN=Users,DC=odg,DC=local" \
-searchBase="dc=odg,dc=local" \
+bindDn="CN=mtwain,CN=Users,DC=ModelOp,DC=local" \
+searchBase="dc=ModelOp,dc=local" \
 searchFilter="(&(SamAccountName={{username}})" \
-url="ldap://odgad.odg.local:3269"
+url="ldap://ModelOpad.ModelOp.local:3269"
 ```
 If the command succeeds, the Vault will respond with
 ```
@@ -279,7 +279,7 @@ In the [section on Configuring Vault](#configuring-vault), we have provided an e
 
 * Distinguished name of a user that has read access to your directory:
 ```
-bindDn="CN=mtwain,CN=Users,DC=odg,DC=local"
+bindDn="CN=mtwain,CN=Users,DC=ModelOp,DC=local"
 ```
 * Password of the above user:
 ```
@@ -287,20 +287,20 @@ bindCredentials="password"
 ```
 * Root of the directory tree where users reside:
 ```
-searchBase="dc=odg,dc=local"
+searchBase="dc=ModelOp,dc=local"
 ```
 * The search filter defining which attribute maps to username and criteria for user authorization:
 ```
-searchFilters="(&(SamAccountName={{username}})(memberOf=CN=fastscore-dashboard-users,CN=Users,DC=odg,DC=local))"
+searchFilters="(&(SamAccountName={{username}})(memberOf=CN=fastscore-dashboard-users,CN=Users,DC=ModelOp,DC=local))"
 ```
 * LDAP URL defining the protocol (`ldap` or `ldaps`, server address, and port):
 ```
-url="ldaps://odgad.odg.local:3269"
+url="ldaps://ModelOpad.ModelOp.local:3269"
 ```
 
 Based on the above configuration, only users that are members of `fastscore-dashboard-users` will be allowed to log in. This means that providing a valid username and password is not sufficient. You should also add the user to `fastscore-dashboard-users` in your directory.
 
 You can also decide to use a different directory attribute as username. If, for example, you would like users to log in with their email addresses, you need to replace `"SamAccountName"` with `"mail"`:
 ```
-searchFilter="$(mail={{username}})(memberOf=CN=fastscore-dashboard-users,CN=Users,DC=odg,DC=local))"
+searchFilter="$(mail={{username}})(memberOf=CN=fastscore-dashboard-users,CN=Users,DC=ModelOp,DC=local))"
 ```

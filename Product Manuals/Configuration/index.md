@@ -1,13 +1,13 @@
 ---
-title: "FastScore Configuration Syntax"
+title: "ModelOp Center Configuration Syntax"
 ---
 
-# FastScore Configuration Syntax
+# ModelOp Center Configuration Syntax
 
 The Connect service maintains the deployment-wide configuration. The
 configuration describes all service instances, the Pneumo properties, etc.
 
-The standard representation of FastScore configuration uses YAML format. The
+The standard representation of ModelOp Center configuration uses YAML format. The
 semi-formal template for the configuration is given below:
 
 ```yaml
@@ -29,10 +29,10 @@ fastscore:
     password: ...
 ```
 
-Use the following CLI command to set the FastScore configuration:
+Use the following CLI command to set the ModelOp Center configuration:
 
 ```
-$ fastscore config set config.yaml
+$ ModelOp Center config set config.yaml
 ```
 
 Note that the configuration can be set multiple time. The services are able to
@@ -70,7 +70,7 @@ Mr. Manager                 model-manage  ok
 
 # Using Docker Secrets to configure database username/password
 
-It is possible to configure credentials in FastScore via Docker Secrets.  To do so you must:
+It is possible to configure credentials in ModelOp Center via Docker Secrets.  To do so you must:
 * [Grant access](https://docs.docker.com/compose/compose-file/#secrets) to the secret to the relevant microservice.
 * Reference the secret with "secret://..." syntax inside the YAML config file.
 
@@ -82,7 +82,7 @@ It is possible to configure credentials in FastScore via Docker Secrets.  To do 
 secret://secret1
 ```
 
-FastScore will look for `secret1` in the default /run/secrets directory
+ModelOp Center will look for `secret1` in the default /run/secrets directory
 
 #### Relative path OVERRIDE
 
@@ -92,7 +92,7 @@ set the env variable `SECRET_PATH_ROOT` to /some/other/directory
 secret://secret2
 ```
 
-FastScore will expect to find /some/other/directory/secret2
+ModelOp Center will expect to find /some/other/directory/secret2
 
 #### Absolute path
 
@@ -100,7 +100,7 @@ FastScore will expect to find /some/other/directory/secret2
 secret:///absolute/path/to/secret3
 ```
 
-FastScore will look in /absolute/path/to for `secret3`
+ModelOp Center will look in /absolute/path/to for `secret3`
 
 Note the three '/', instead of the usual two.
 
@@ -149,9 +149,9 @@ S3 stream:
 
 # Configuration Persistence
 
-Upon startup, the Connect service checks for a `FASTSCORE_CONFIG` environment variable.  If present, it uses the contents of this variable to set FastScore's initial configuration.
+Upon startup, the Connect service checks for a `fastscore_CONFIG` environment variable.  If present, it uses the contents of this variable to set ModelOp Center's initial configuration.
 
-FASTSCORE_CONFIG can be set right in a docker-compose file:
+fastscore_CONFIG can be set right in a docker-compose file:
 ```
 ...
   connect: 
@@ -160,7 +160,7 @@ FASTSCORE_CONFIG can be set right in a docker-compose file:
         - "8001:8001"
     stdin_open: true
     environment: 
-       FASTSCORE_CONFIG: |
+       fastscore_CONFIG: |
         fastscore: 
           fleet: 
             - api: model-manage

@@ -1,12 +1,12 @@
 ---
-title: "FastScore Baker"
+title: "ModelOp Center Baker"
 ---
 
 # Baker
 
 ## Overview and Use Case
 
-In some production deployments, it will be necessary to deploy pre-configured engine containers with all models, streams, and schemas "baked in" to the image instead of loaded via the REST API. Consider a model deployed in engines that are managed by an orchestrator such as Kubernetes. The orchestrater may provide functionality for automatic replication, scaling, and recreation of failed containers. However, the orchestrator doesn't know anything specifically about the configuration of FastScore, so when it creates a "copy" of the FastScore Engine container, currently that Engine container will start up with no model deployed. A service backed by a baked Engine (described below) will not have this deficiency, and may be safely replicated, or moved about without concern regardless of additional FastScore services. 
+In some production deployments, it will be necessary to deploy pre-configured engine containers with all models, streams, and schemas "baked in" to the image instead of loaded via the REST API. Consider a model deployed in engines that are managed by an orchestrator such as Kubernetes. The orchestrater may provide functionality for automatic replication, scaling, and recreation of failed containers. However, the orchestrator doesn't know anything specifically about the configuration of ModelOp Center, so when it creates a "copy" of the ModelOp Center Engine container, currently that Engine container will start up with no model deployed. A service backed by a baked Engine (described below) will not have this deficiency, and may be safely replicated, or moved about without concern regardless of additional ModelOp Center services. 
 
 ## Example
 

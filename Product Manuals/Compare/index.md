@@ -1,7 +1,7 @@
 ---
 title: "Compare"
 ---
-# FastScore Compare
+# ModelOp Center Compare
 
 As a general microservice tool, Compare allows users to quickly generate customized or standard methods for comparing performance between two, or many, models.
 

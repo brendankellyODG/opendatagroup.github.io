@@ -1,10 +1,10 @@
 ---
 title: "Data Pipeline Integration: Streams"
-description: "This is a step by step guide for integrating a data pipeline for a model in FastScore. It contains instructions for ModelOps and Data Engineers to prepare, deploy and test their model's data pipeline. This guide was last updated for v1.10 of FastScore.\n\nIf you need support or have questions, please email us:  [support@opendatagroup.com](mailto:support@opendatagroup.com)"
+description: "This is a step by step guide for integrating a data pipeline for a model in ModelOp Center. It contains instructions for ModelOps and Data Engineers to prepare, deploy and test their model's data pipeline. This guide was last updated for v1.10 of ModelOp Center.\n\nIf you need support or have questions, please email us:  [support@opendatagroup.com](mailto:support@opendatagroup.com)"
 ---
 
 # Data Pipeline Integration: Streams
-This is a step by step guide for integrating and testing a model's data pipeline in FastScore. It contains instructions for Data and ModelOps engineers to define and test the Streams that manage data inputs and outputs in FastScore. We will also walk through using Streams to set model scoring mode including On-demand, Batch, and Streaming.  This guide was last updated for v1.10 of FastScore. 
+This is a step by step guide for integrating and testing a model's data pipeline in ModelOp Center. It contains instructions for Data and ModelOps engineers to define and test the Streams that manage data inputs and outputs in ModelOp Center. We will also walk through using Streams to set model scoring mode including On-demand, Batch, and Streaming.  This guide was last updated for v1.10 of ModelOp Center. 
 
 As we go, we will be referring to an example XGBoost model available in the `examples` branch of this [repo](https://github.com/opendatagroup/Getting-Started/tree/examples).
 
@@ -24,8 +24,8 @@ If you need support or have questions, please email us: support@opendatagroup.co
 ## <a name="Prerequisites"></a>Pre-requisites
 Before we walk through how to build and test streams, we will need the following:
 
-1. [FastScore Environment Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/)
-2. [FastScore CLI Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/#installing-the-fastscore-cli)
+1. [ModelOp Center Environment Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/)
+2. [ModelOp Center CLI Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/#installing-the-ModelOp%20Center-cli)
 3. [Example repo downloaded](https://github.com/opendatagroup/Getting-Started/tree/examples)
 
 This guide walks through a multi-class classification model that determines the species of iris based on four features: sepal length/width, petal length/width using the XGBoost framework. It is available in the repo above. For details on how we defined this Model Deployment Package, refer to this guide: [Conform and Deploy a Model Guide](https://opendatagroup.github.io/Getting%20Started/Conform%20and%20Deploy%20a%20Model/).
@@ -41,7 +41,7 @@ bash -x load.sh
 ```
 
 ## <a name="intro-to-streams"></a>Intro to Streams
-As a model goes through the Model Lifecycle, the data pipeline is going to dynamically change for various use cases and environments. The Stream abstraction is FastScore is going to allow us to quickly change the data pipeline and scoring behavior without constantly recoding the model. Streams define the integration to our data pipeline. They will read records from underlying transport, verify them against the schema, and feed them to the model. They also will determine how the model will score data while deployed (on-demand, batch, or streaming). Streams are attached to input and output slots of the FastScore Engine that provide the Model Execution Script access for reading and writing data. Even slot numbers respond to the model inputs and odd numbers for data outputs. It is possible to have multiple input and output streams as described in [this guide](https://opendatagroup.github.io/Product%20Manuals/Multiple%20Input%20and%20Output%20Streams/).
+As a model goes through the Model Lifecycle, the data pipeline is going to dynamically change for various use cases and environments. The Stream abstraction is ModelOp Center is going to allow us to quickly change the data pipeline and scoring behavior without constantly recoding the model. Streams define the integration to our data pipeline. They will read records from underlying transport, verify them against the schema, and feed them to the model. They also will determine how the model will score data while deployed (on-demand, batch, or streaming). Streams are attached to input and output slots of the ModelOp Center Engine that provide the Model Execution Script access for reading and writing data. Even slot numbers respond to the model inputs and odd numbers for data outputs. It is possible to have multiple input and output streams as described in [this guide](https://opendatagroup.github.io/Product%20Manuals/Multiple%20Input%20and%20Output%20Streams/).
 
 Each stream is defined via a Stream Descriptor, a JSON file that contains connection information and components that define scoring behavior. Full documentation on Stream Descriptors is available [here](https://opendatagroup.github.io/Product%20Manuals/Stream%20Descriptors/). 
 
@@ -64,7 +64,7 @@ Here are the components of the stream that we define in the Stream Descriptor:
     }
 ```
 
-We are going to be walking through some examples of utilizing streams, but first let us cover how to build them and add them to FastScore. We add streams to FastScore using the following [CLI](https://opendatagroup.github.io/Reference/FastScore%20CLI/) command: 
+We are going to be walking through some examples of utilizing streams, but first let us cover how to build them and add them to ModelOp Center. We add streams to ModelOp Center using the following [CLI](https://opendatagroup.github.io/Reference/ModelOp%20Center%20CLI/) command: 
 
 ```bash
 fastscore stream add <stream-name> <stream-descriptor-file>
@@ -98,7 +98,7 @@ And it will return our sample data:
 ```
 
 ## <a name="use-cases"></a>Use Cases and Scoring Modes 
-The scoring and data needs of a model will change often along the Model Lifecycle and as business needs change. FastScore Streams will allow our model the flexibility to meet these evolving needs. 
+The scoring and data needs of a model will change often along the Model Lifecycle and as business needs change. ModelOp Center Streams will allow our model the flexibility to meet these evolving needs. 
 
 We are going to walk through several use cases using different streams for the same model to show how we can leverage streams.
 
@@ -130,7 +130,7 @@ fastscore engine reset
 fastscore run xgboost_iris-py3 rest: rest:
 fastscore engine inspect
 ```
-If the `fastscore engine inspect` command returns `engine-1 is running`, the model is ready for data inputs. If it returns an error, check the docker logs for potential issues. It is most likely missing dependencies for the model or missing attachments.
+If the `ModelOp Center engine inspect` command returns `engine-1 is running`, the model is ready for data inputs. If it returns an error, check the docker logs for potential issues. It is most likely missing dependencies for the model or missing attachments.
 
 Now we can send the model data through the CLI and view the output:
 
@@ -151,7 +151,7 @@ To deploy the model as REST for an application, we will need a custom stream tha
         }
 }
 ```
-Next, we add it to Model Manage with `fastscore stream add rest-trip library/streams/rest-trip.json`.
+Next, we add it to Model Manage with `ModelOp Center stream add rest-trip library/streams/rest-trip.json`.
 
 To deploy it with our new stream, we run the following commands:
 ```bash
@@ -221,7 +221,7 @@ We also create the output stream as `s3-out.json` that will create a new output 
     }
 }
 ```
-Now we add the Streams to FastScore using the following. We can also use the `fastscore stream verify` and `fastscore sample` commands detailed above to make sure they are defined correctly.
+Now we add the Streams to ModelOp Center using the following. We can also use the `ModelOp Center stream verify` and `ModelOp Center sample` commands detailed above to make sure they are defined correctly.
 ```
 fastscore stream add s3-input s3-input.json
 fastscore stream add s3-out s3-out.json
@@ -274,7 +274,7 @@ secrets:
         external: true
 ```
 
-Now, we deploy the containers and set up the FastScore environment and assets using the following commands:
+Now, we deploy the containers and set up the ModelOp Center environment and assets using the following commands:
 `docker stack deploy -c docker-compose-deploy.yaml --resolve-image changed fs-vanilla`
 `bash -x setup.sh`
 `bash -x load.sh`
@@ -321,7 +321,7 @@ fastscore run xgboost_iris-py3 s3-input-secret s3-out-secret
 
 
 ## <a name="streaming-to-kafka"></a>Streaming Scoring: Kafka
-Kafka provides a fantastic way to stream data into and out of models. It is also useful for handling communication between models in FastScore for modular data processing and inference.   
+Kafka provides a fantastic way to stream data into and out of models. It is also useful for handling communication between models in ModelOp Center for modular data processing and inference.   
 
 For this example, we are going to have the model loop over a data file to mimic an incoming data stream. This pattern is useful for testing, but not recommended for Production and higher-level environments. In the stream descriptor, you will notice that we set `Loop` to `True` to initiate the looping behavior.   
 
@@ -340,7 +340,7 @@ We will create the descriptor as shown below and save it as `iris_file_input.jso
 ```
 The transport is going to point to a file in the container at `/tmp/xgboost_iris_inputs.jsons`. This file can be copied into the container via a command in the Dockerfile, or we can use a CLI command to place that file there. This approach is not recommended for Production, but useful for testing in lower environments. We can run the following command to upload the input file to the container:
 
-`fastscore engine put engine-1 xgboost_iris_inputs.jsons xgboost_iris_inputs.jsons`
+`ModelOp Center engine put engine-1 xgboost_iris_inputs.jsons xgboost_iris_inputs.jsons`
 
 For our output stream, we will set up a Stream to point to our Kafka container. The Kafka container is available in our deployment via the docker-compose.yaml file. We create the following descriptor and save it as `iris_stream.json`.
 
@@ -361,7 +361,7 @@ Now we are ready to add these streams to Model Manage and deploy the model with 
 fastscore stream add iris_kafka iris_stream.json
 fastscore stream add iris_file_input iris_file_input.json
 ```
-We can also run `fastscore stream verify` and `fastscore stream sample` to make sure they are configured correctly.
+We can also run `ModelOp Center stream verify` and `ModelOp Center stream sample` to make sure they are configured correctly.
 
 Now to deploy our model with these streams, we run the following commands:
 
@@ -382,8 +382,8 @@ To continue learning, check out some additional examples here:
 Additionally, consult the detailed Product Reference documentation:
 - [Stream Descriptor](https://opendatagroup.github.io/Product%20Manuals/Stream%20Descriptors/)
 - [Multiple Input/ Output Streams](https://opendatagroup.github.io/Product%20Manuals/Multiple%20Input%20and%20Output%20Streams/)
-- [FastScore CLI Reference](https://opendatagroup.github.io/Reference/FastScore%20CLI)
-- [FastScore SDK Reference](https://opendatagroup.github.io/Reference/FastScore%20SDKs)
+- [ModelOp Center CLI Reference](https://opendatagroup.github.io/Reference/ModelOp%20Center%20CLI)
+- [ModelOp Center SDK Reference](https://opendatagroup.github.io/Reference/ModelOp%20Center%20SDKs)
 
 If you need support or have questions, please email us: support@opendatagroup.com
 

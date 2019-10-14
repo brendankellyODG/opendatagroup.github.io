@@ -6,11 +6,11 @@ excerpt: ""
 
 ## Overview
 
-FastScore enforces strict typing of engine inputs and outputs at two levels: stream input/output, and model input/output. Types are declared using [AVRO schema](https://avro.apache.org/docs/1.8.1/). 
+ModelOp Center enforces strict typing of engine inputs and outputs at two levels: stream input/output, and model input/output. Types are declared using [AVRO schema](https://avro.apache.org/docs/1.8.1/). 
 
-To support this functionality, FastScore's Model Manage maintains a database of named AVRO schemas. Python and R models must then reference their input and output schemas using smart comments. (PrettyPFA and PFA models instead explicitly include their AVRO types as part of the model format.) [Stream descriptors](https://opendatagroup.github.io/Product%20Manuals/Stream%20Descriptors/) may either reference a named schema from Model Manage, or they may explicitly declare schemas.
+To support this functionality, ModelOp Center's Model Manage maintains a database of named AVRO schemas. Python and R models must then reference their input and output schemas using smart comments. (PrettyPFA and PFA models instead explicitly include their AVRO types as part of the model format.) [Stream descriptors](https://opendatagroup.github.io/Product%20Manuals/Stream%20Descriptors/) may either reference a named schema from Model Manage, or they may explicitly declare schemas.
 
-In either case, FastScore performs the following type checks:
+In either case, ModelOp Center performs the following type checks:
 
 1. Before starting a job: the input stream's schema is checked for compatibility against the model's input schema, and the output stream's schema is checked for compatibility against the model's output schema.
 
@@ -66,7 +66,7 @@ and score this record to produce
 {"name":"Bob", "product":"6.0"}
 ```
 
-[Once FastScore is running](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/), we can add the model and associated schemas to model manage with the following commands:
+[Once ModelOp Center is running](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/), we can add the model and associated schemas to model manage with the following commands:
 ```
 fastscore schema add named-array named-array.avsc
 fastscore schema add named-double named-double.avsc

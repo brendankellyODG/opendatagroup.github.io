@@ -1,7 +1,7 @@
 # TensorFlow LSTM
 
 In this tutorial, we'll create an LSTM neural network using time series data (
-historical S&P 500 closing prices), and then deploy this model in FastScore. The
+historical S&P 500 closing prices), and then deploy this model in ModelOp Center. The
 model will be written in Python (3) and use the TensorFlow library.
 [An excellent introduction to LSTM networks can be found on Christopher Olah's blog.](http://colah.github.io/posts/2015-08-Understanding-LSTMs/)
 
@@ -11,13 +11,13 @@ model will be written in Python (3) and use the TensorFlow library.
 2. [Generating Training Data](#generating-training-data)
 3. [Implementing the Model in TensorFlow](#implementing-the-model-in-tensorflow)
 4. [Preparing the Model for Deployment](#preparing-the-model-for-deployment)
-5. [Deploying the Model in FastScore](#deploying-the-model-in-fastscore)
+5. [Deploying the Model in ModelOp Center](#deploying-the-model-in-ModelOp Center)
 
 ## The Dataset
 
 The model we're building will predict the closing price of the S&P 500, based
 on previous days' closing prices. So, the primary dataset will be a collection
-of daily S&P closing prices ([download it here](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_lstm_data.tar.gz)). Let's take a
+of daily S&P closing prices ([download it here](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_lstm_data.tar.gz)). Let's take a
 look at this dataset.
 
 First, import the necessary libraries:
@@ -49,7 +49,7 @@ plt.plot(sp500.index, sp500['Close'])
 There's a small problem with this dataset: the price is expressed in dollars,
 and the value of the dollar has changed over time. A reasonable proxy for the dollar
 value is the consumer price index---let's rescale our S&P 500 closing prices by
-this data. [The CPI dataset can be downloaded here.](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_lstm_data.tar.gz)
+this data. [The CPI dataset can be downloaded here.](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_lstm_data.tar.gz)
 
 ```python
 cpi = pd.read_csv('CPIAUCSL.csv')
@@ -343,7 +343,7 @@ given that the model was only trained on pre-crisis data.
 
 ## Preparing the Model for Deployment
 
-Deploying our trained model in FastScore is straightforward. A FastScore Python
+Deploying our trained model in ModelOp Center is straightforward. A ModelOp Center Python
 model script must define an `action` method, and may additionally define `begin`
 and `end` methods for intialization/uninitialization, as well as any user-defined
 functions or imports needed.
@@ -412,7 +412,7 @@ The `predict` method has been slightly simplified: we no longer restore the sess
 from the save file (it is already restored and opened in the `begin` method), but
 is otherwise identical.
 
-Finally, the `action` method is the hook that the FastScore engine uses to produce
+Finally, the `action` method is the hook that the ModelOp Center engine uses to produce
 scores. It will take as input a closing price, and produce as output the prediction
 for the next day's closing price.
 
@@ -437,14 +437,14 @@ JSON).
 
 The inputs and outputs of this model will be Avro doubles, so let's add smart comments
 to the top of the model code to indicate this. We'll also be manually controlling the
-version of TensorFlow we install, so we'll use the `fastscore.module-attached` smart
+version of TensorFlow we install, so we'll use the `ModelOp Center.module-attached` smart
 comment to indicate that the engine should not attempt to install TensorFlow automatically.
-In total, our FastScore-ready model is:
+In total, our ModelOp Center-ready model is:
 
 ```python
-# fastscore.schema.0: double
-# fastscore.schema.1: double
-# fastscore.module-attached: tensorflow
+# ModelOp Center.schema.0: double
+# ModelOp Center.schema.1: double
+# ModelOp Center.module-attached: tensorflow
 
 import tensorflow as tf
 import numpy as np
@@ -498,15 +498,15 @@ def end():
 ```
 
 Note that we'll additionally need to bundle the `tf_sp500_lstm` TensorFlow session
-checkpoints with our model in order for it to execute in FastScore; to do this,
+checkpoints with our model in order for it to execute in ModelOp Center; to do this,
 save the checkpoint as a model attachment:
 ```bash
 tar czvf attachment.tar.gz tf_sp500_lstm*
 ```
 
-## Deploying the Model in FastScore
+## Deploying the Model in ModelOp Center
 
-Finally, let's deploy our FastScore-ready model into the FastScore engine. First,
+Finally, let's deploy our ModelOp Center-ready model into the ModelOp Center engine. First,
 we'll need to create a custom engine image with the specific environment we used
 to create this model. Create a text file called `requirements.txt`, and include
 the following:
@@ -525,12 +525,12 @@ Next, let's build a custom Docker container image from the base engine image:
 
 **Dockerfile**
 ```
-FROM fastscore/engine:1.6.1
+FROM ModelOp Center/engine:1.6.1
 ADD ./requirements.txt .
 RUN pip3 install --isolated -r requirements.txt
 ```
 
-We're starting with the 1.6.1 FastScore engine image, and then installing the
+We're starting with the 1.6.1 ModelOp Center engine image, and then installing the
 the libraries listed in `requirements.txt`.
 
 To build the container image, just run
@@ -540,18 +540,18 @@ docker build -t localrepo/engine:tensorflow .
 from within the same directory as the Dockerfile and `requirements.txt` file.
 
 All that's needed to add a custom TensorFlow-ready engine to your fleet is
-to run the engine container and update your FastScore fleet's configuration to
+to run the engine container and update your ModelOp Center fleet's configuration to
 include the new engine. If you're starting from scratch, we have prepared a Docker-Compose
-file together with some shell scripts to build a full FastScore fleet with the
-custom container image. [Download the files here.](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_lstm_fastscore.tar.gz)
+file together with some shell scripts to build a full ModelOp Center fleet with the
+custom container image. [Download the files here.](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_lstm_ModelOp Center.tar.gz)
 
 To add our model to Model Manage, you may directly upload the files using the
 Dashboard, or run the following commands with the CLI:
 ```
-fastscore schema add double double.avsc
-fastscore model add -type:python3 tf_sp500_lstm tf_sp500_lstm.py
-fastscore attachment upload tf_sp500_lstm attachment.tar.gz
-fastscore stream add rest rest.json
+ModelOp Center schema add double double.avsc
+ModelOp Center model add -type:python3 tf_sp500_lstm tf_sp500_lstm.py
+ModelOp Center attachment upload tf_sp500_lstm attachment.tar.gz
+ModelOp Center stream add rest rest.json
 ```
 where `double.avsc` is the Avro schema file
 
@@ -575,9 +575,9 @@ Model Manage (otherwise, the engine will assume it is a Python 2 model).
 
 Next, deploy the model with the following commands:
 ```
-fastscore model load tf_sp500_lstm
-fastscore stream attach rest 1
-fastscore stream attach rest 0
+ModelOp Center model load tf_sp500_lstm
+ModelOp Center stream attach rest 1
+ModelOp Center stream attach rest 0
 ```
 
 The numbers in the `stream attach` command indicate the slot number to use for that
@@ -587,12 +587,12 @@ slots, but as designed our model only takes in data from a single source and pro
 a single output stream.
 
 Now the model is exposed on the engine's REST endpoint, and can be used for scoring.
-Use the `fastscore model input` command to deliver inputs to the model, and
-`fastscore model output` to retrieve outputs (for asynchronous REST scoring).
+Use the `ModelOp Center model input` command to deliver inputs to the model, and
+`ModelOp Center model output` to retrieve outputs (for asynchronous REST scoring).
 In this case, the model is configured to use asynchoronous REST because it needs
 to receive 30 inputs before it can start producing output.
 
-[Download scripts here to demonstrate how to produce scores with this model.](https://s3-us-west-1.amazonaws.com/fastscore-examples/tf_lstm_fastscore.tar.gz)
+[Download scripts here to demonstrate how to produce scores with this model.](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/tf_lstm_ModelOp Center.tar.gz)
 
 Happy scoring!
 

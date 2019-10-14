@@ -27,13 +27,13 @@ Any production-ready analytic deployment has to make sure to monitor the followi
 	* Are all my compute nodes/engines healthy?
 	* What does the CPU/Memory load look like?
 
-Some of this data can be collected using [FastScore Sensors](../../../Archived/Product Documentation/Sensors), while other, more discrete metrics, such as model drift or noise level has to be computed using what we call [Monitoring Models](#monitoring-models).
+Some of this data can be collected using [ModelOp Center Sensors](../../../Archived/Product Documentation/Sensors), while other, more discrete metrics, such as model drift or noise level has to be computed using what we call [Monitoring Models](#monitoring-models).
 
 ## Collecting sensor data
 
-First, a brief introduction to FastScore Sensors. A sensor is a configurable function that collects data from a particular point in the model execution pipeline (a tapping point) according to some activation schedule. It is configured using a JSON specification (Sensor Descriptor) and can be installed/uninstalled into a running Engine.
+First, a brief introduction to ModelOp Center Sensors. A sensor is a configurable function that collects data from a particular point in the model execution pipeline (a tapping point) according to some activation schedule. It is configured using a JSON specification (Sensor Descriptor) and can be installed/uninstalled into a running Engine.
 
-For a deeper dive, see [FastScore Sensors](../../../Archived/Product Documentation/Sensors)
+For a deeper dive, see [ModelOp Center Sensors](../../../Archived/Product Documentation/Sensors)
 
 We will extract the following metrics from sensor data:
 
@@ -62,7 +62,7 @@ The key fields to notice here are `tap`, `src` and `data`. The `tap` field tells
 Since all sensor reports go into a single topic, we will use the `src` field to differentiate reports from different engines. In order to make our metrics less cryptic, let’s change the engine UUID into the name of the model running on that engine. We can do so using the SDK, like so:
 
 ```python
-from fastscore.suite import Connect, Engine
+from ModelOp Center.suite import Connect, Engine
 
 connect = Connect(PROXY_PREFIX)
 fleet = connect.fleet()
@@ -92,8 +92,8 @@ for model in status:
 The number of records consumed/produced is reported by the `manifold.N.records.count` sensor, where N is the slot number (see [Multiple Input/Output streams](../../../Product Manuals/Multiple Input and Output Streams/)). Here's what consuming data from this sensor would look like:
 
 ```python
-# fastscore.schema.0: sensor-report
-# fastscore.schema.1: tagged-double
+# ModelOp Center.schema.0: sensor-report
+# ModelOp Center.schema.1: tagged-double
 
 import re
 
@@ -115,8 +115,8 @@ def action(datum):
 Similarly, rejected record counts can be consumed from the `manifold.N.records.rejected.by.schema` for records rejected by schema and `manifold.N.records.rejected.by.encoding` for records rejected by encoding.
 
 ```python
-# fastscore.schema.0: sensor-report
-# fastscore.schema.1: tagged-double
+# ModelOp Center.schema.0: sensor-report
+# ModelOp Center.schema.1: tagged-double
 
 import re
 
@@ -141,8 +141,8 @@ def action(datum):
 CPU/Memory utilization is reported by the `sys.cpu.utilization` and `sys.memory` respectively. To consume these reports, simply extract the `data` field:
 
 ```python
-# fastscore.schema.0: sensor-report
-# fastscore.schema.1: tagged-double
+# ModelOp Center.schema.0: sensor-report
+# ModelOp Center.schema.1: tagged-double
 
 def action(datum):
 	
@@ -160,8 +160,8 @@ def action(datum):
 Computing throughput is a bit more involved. We will use the data reported by the `manifold.N.records.count` sensor along with the `delta_time` field, which tells us how much time has passed since the last report, to compute the throughput. Since `delta_time` might be zero, we will need to accumulate data fields until a non-zero `delta_time` is seen. It's important to remember to have a separate buffer for each model and slot number so different sensor reports don't interfere with each other.
 
 ```python
-# fastscore.schema.0: sensor-report
-# fastscore.schema.1: tagged-double
+# ModelOp Center.schema.0: sensor-report
+# ModelOp Center.schema.1: tagged-double
 
 import re
 
@@ -220,8 +220,8 @@ Engine status notifications are not produced by sensors, however, by default the
 Here we can see the same `src` field we saw in the sensor reports, but the `type` is now `engine-state`. The important field to look at here is `state`, which tells us the current state of the engine: init (idle), running (healthy), or error (unhealthy). Here's how we will consume these reports:
 
 ```python
-# fastscore.schema.0: state-message
-# fastscore.schema.1: tagged-double
+# ModelOp Center.schema.0: state-message
+# ModelOp Center.schema.1: tagged-double
 
 def action(datum):
 	model = find_model(datum['src'])
@@ -252,8 +252,8 @@ Each such monitoring model becomes it's own separately managable asset, making i
 Here's a simple example of a monitoring model. The model sends an alert if the received data is outside of a threshold.
 
 ```python
-# fastscore.schema.0: int
-# fastscore.schema.1: alert
+# ModelOp Center.schema.0: int
+# ModelOp Center.schema.1: alert
 
 THRESHOLD = 100
 
@@ -286,7 +286,7 @@ Now it's time to visualize our metrics in Grafana. After adding our InfluxDB ins
 
 For a more detailed guide for setting up your visualization in Grafana, see [Grafana Docs](http://docs.grafana.org/guides/getting_started/).
 
-For an example of a monitoring workflow, download the [archive](https://s3-us-west-1.amazonaws.com/fastscore-examples/monitoring_demo.tar.gz) and follow the instructions in README.md
+For an example of a monitoring workflow, download the [archive](https://s3-us-west-1.amazonaws.com/ModelOp Center-examples/monitoring_demo.tar.gz) and follow the instructions in README.md
 
 ## Further Reading
 

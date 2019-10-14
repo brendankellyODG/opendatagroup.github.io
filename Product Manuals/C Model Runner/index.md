@@ -9,7 +9,7 @@ In v1.8 the C model runner has been updated to support more encodings and other
 featured. The C model conventions have also changed. The new conventions are
 explained below.
 
-## FastScore interface functions
+## ModelOp Center interface functions
 
 The source code of a C model must define three interface functions: begin(),
 action(), and end1(). These functions must have the following signatures:
@@ -61,7 +61,7 @@ The data format can be determined by checking the `fmt` field of the
 ```
 void action(fastscore_value_t v, int slot, int seqno)
 {
-    if (v.fmt == FASTSCORE_FMT_JSON)
+    if (v.fmt == fastscore_FMT_JSON)
     {
         ...
 ...
@@ -69,14 +69,14 @@ void action(fastscore_value_t v, int slot, int seqno)
 
 ### Null format
 
-If the format of `fastscore_value_t` is FASTSCORE_FMT_NULL, then the binary data
+If the format of `fastscore_value_t` is fastscore_FMT_NULL, then the binary data
 can be accesses using `data` and `size` fields. The `data` field contains a
 pointer to the byte array and the `size` field contains its length.
 
 For example,
 
 ```
-    assert(v.fmt == FASTSCORE_FMT_NULL);
+    assert(v.fmt == fastscore_FMT_NULL);
     for (int i = 0; i < v.size; i++)
         do_more(v.data[i]);
     ...
@@ -84,12 +84,12 @@ For example,
 
 ### UTF-8 format
 
-The FASTSCORE_FMT_UTF8 format indicates that the value contains a
+The fastscore_FMT_UTF8 format indicates that the value contains a
 null-terminated Unicode string. The `str` field points to the beginning of the
 string.
 
 ```
-    assert(v.fmt == FASTSCORE_FMT_UTF8);
+    assert(v.fmt == fastscore_FMT_UTF8);
     if (strcmp(v.str, "my-data-record") == 0)
     {
         ...
@@ -100,11 +100,11 @@ constructing output records.
 
 ### JSON format
 
-If the `fmt` field of `fastscore_value_t` is FASTSCORE_FMT_JSON, then it
+If the `fmt` field of `fastscore_value_t` is fastscore_FMT_JSON, then it
 contains JSON data. The `js` field holds a `json_t *` reference as described in
 the Jansson library [docs](https://jansson.readthedocs.io/en/2.2/apiref.html).
 
-Note that the lifetime of the input `json_t` value is managed by FastScore.
+Note that the lifetime of the input `json_t` value is managed by ModelOp Center.
 The model needs to use `json_incref` if it wants to keep the value around after
 the `action()` call exits. The safest way, it to retrieve actual data from the
 `json_t` value and use it directly.
@@ -112,7 +112,7 @@ the `action()` call exits. The safest way, it to retrieve actual data from the
 For example,
 
 ```
-    assert(v.fmt == FASTSCORE_FMT_JSON);
+    assert(v.fmt == fastscore_FMT_JSON);
     assert(json_is_object(v.js));
     json_t *foo = json_object_get(v.js, "foo");
     const char *str = json_string_value(foo);
@@ -121,7 +121,7 @@ For example,
 
 ### Avro format
 
-The FASTSCORE_FMT_AVRO format indicate that the value contains data decoded
+The fastscore_FMT_AVRO format indicate that the value contains data decoded
 using Avro binary encoding. The C runner uses the standard C Avro library for
 handling such data. The `avro` field of the `fastscore_value_t` struct contains
 a value of type `avro_value_t`. See the Avro
@@ -130,7 +130,7 @@ a value of type `avro_value_t`. See the Avro
 For example,
 
 ```
-    assert(v.fmt == FASTSCORE_FMT_AVRO);
+    assert(v.fmt == fastscore_FMT_AVRO);
     double f;
     avro_value_get_double(&v.avro, &f);
     ...
@@ -140,17 +140,17 @@ For example,
 
 The model may ask the runner to provide records in batches or recordsets. Thus
 the `fastscore_value_t` may contain multiple records. In this case its `fmt`
-field contains FASTSCORE_FMT_RSET. The length of the recordset is kept in the
+field contains fastscore_FMT_RSET. The length of the recordset is kept in the
 `count` field. Individual records can be accessed using an array pointed to by
 the `rs` field.
 
 For example,
 
 ```
-    assert(v.fmt == FASTSCORE_FMT_RSET);
+    assert(v.fmt == fastscore_FMT_RSET);
     for (int i = 0; i < v.count; i++)
     {
-        assert(v.rs[i].fmt == FASTSCORE_FMT_JSON);
+        assert(v.rs[i].fmt == fastscore_FMT_JSON);
         json_t *foo = json_object_fet(v.rs[i].js, "foo");
         ...
 ```
@@ -178,7 +178,7 @@ Examples:
 
 ```
     fastscore_value_t o = {
-        .fmt = FASTSCORE_FMT_UTF8,
+        .fmt = fastscore_FMT_UTF8,
         .str = strdup("my-output-record"),
     };
     fastscore_emit(o, 1);
@@ -187,7 +187,7 @@ Examples:
 
 ```
     fastscore_emit((fastscore_value_t) {  // C99 syntax
-        .fmt = FASTSCORE_FMT_JSON,
+        .fmt = fastscore_FMT_JSON,
         .js = json_integer(42),
     });
 ```
@@ -198,9 +198,9 @@ Note that it is not currently possible to output Avro data.
 
 Format constants defined by fastscore.h:
 
-* FASTSCORE_FMT_NULL
-* FASTSCORE_FMT_UTF8
-* FASTSCORE_FMT_JSON
-* FASTSCORE_FMT_AVRO
-* FASTSCORE_FMT_RSET
+* fastscore_FMT_NULL
+* fastscore_FMT_UTF8
+* fastscore_FMT_JSON
+* fastscore_FMT_AVRO
+* fastscore_FMT_RSET
 

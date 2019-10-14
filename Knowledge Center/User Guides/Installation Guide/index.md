@@ -1,6 +1,6 @@
 ---
-title: "FastScore Installation Guide"
-description: "How to install FastScore with Docker or Kubernetes"
+title: "ModelOp Center Installation Guide"
+description: "How to install ModelOp Center with Docker or Kubernetes"
 ---
 
 

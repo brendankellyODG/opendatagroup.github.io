@@ -80,7 +80,7 @@ needed.
 ```
 
 The best way to verify a newly-constructed stream descriptor is to use the
-`fastscore stream verify` command described [here](../../Reference/FastScore CLI/).
+`fastscore stream verify` command described [here](../../Reference/fastscore CLI/).
 
 
 ### <a name="section-common-fields">Common Fields
@@ -216,7 +216,7 @@ File streams only have one parameter: the path to the file. Note that the path t
 #### <a name="section-odbc">ODBC
 
 An ODBC stream reads data from RDBMS. The key parameter of the ODBC transport
-is the connection string. Currently, FastScore supports MSSQL and PostgreSQL
+is the connection string. Currently, ModelOp Center supports MSSQL and PostgreSQL
 databases.
 
 | Field | Type | Description | Default | Example |
@@ -373,7 +373,7 @@ You can set the separator to something other then newline as follows:
 }
 ```
 
-In general, FastScore can contain a zero-length record. null and utf-8 encoding do allow such records. However, an empty record right before the end of the stream is discarded.
+In general, ModelOp Center can contain a zero-length record. null and utf-8 encoding do allow such records. However, an empty record right before the end of the stream is discarded.
 
 ### <a name="fixed-envelope">fixed
 The "fixed" envelope splits the stream into records of the predefined size.

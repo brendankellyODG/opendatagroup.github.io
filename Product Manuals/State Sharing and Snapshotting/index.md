@@ -4,7 +4,7 @@ excerpt: "New in v1.5!"
 ---
 # State Sharing and Snapshotting
 
-As of v1.5, FastScore supports state sharing and snapshotting in Python and R models. This is achieved by providing a **cell** and **pool** interface to the models. Cells and pools provide persistent storage. The distinction between the two is that cells are just global variables that are shared across all runners, whereas pools are like environments in R: collections of key-value pairs that are shared across all runners, and can be manipulated at runtime. Additionally, the state of the engine's cells and pools can be "snapshotted": saved and exported for later use. 
+As of v1.5, ModelOp Center supports state sharing and snapshotting in Python and R models. This is achieved by providing a **cell** and **pool** interface to the models. Cells and pools provide persistent storage. The distinction between the two is that cells are just global variables that are shared across all runners, whereas pools are like environments in R: collections of key-value pairs that are shared across all runners, and can be manipulated at runtime. Additionally, the state of the engine's cells and pools can be "snapshotted": saved and exported for later use. 
 
 ## State Management
 
@@ -87,7 +87,7 @@ For every input, this pool model returns the total number of inputs received. So
 
 ## Snapshotting
 
-Snapshotting is a mechanism for capturing the state of an engine's cells and pools. Model snapshots are automatically created when a model receives an end-of-stream message. To support snapshotting, the FastScore CLI provides convenient wrappers around the snapshot REST API. These commands are:
+Snapshotting is a mechanism for capturing the state of an engine's cells and pools. Model snapshots are automatically created when a model receives an end-of-stream message. To support snapshotting, the ModelOp Center CLI provides convenient wrappers around the snapshot REST API. These commands are:
 ```
 fastscore snapshot list <model name>
 fastscore snapshot restore <model name> <snapshot id>

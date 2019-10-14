@@ -6,7 +6,7 @@ excerpt: ""
 
 ## Overview
 
-FastScore Composer is a microservice component that allows the user to create, manage, and deploy "workflows" of models: complex multi-model analytic pipelines that utilize multiple FastScore engines to execute.
+ModelOp Center Composer is a microservice component that allows the user to create, manage, and deploy "workflows" of models: complex multi-model analytic pipelines that utilize multiple ModelOp Center engines to execute.
 
 This document describes the workflow format specification, Composer's REST API, and the internal implementation of Composer functionality.
 
@@ -178,7 +178,7 @@ An explanation of the fields:
 | Field         | Example                 | Description                                                                                                                                                                                                    |
 |---------------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ConductorHost | https://conductor:8011  | Host and port of Conductor.*                                                                                                                                                                                   |
-| Proxy         | https://proxy:8000      | Host and port of FastScore proxy.**                                                                                                                                                                            |
+| Proxy         | https://proxy:8000      | Host and port of ModelOp Center proxy.**                                                                                                                                                                            |
 | Mode          | New, Idle, or Overwrite | New = create new engines for workflows;Idle = deploy models on existing idle engines (i.e. don't use Conductor)Overwrite = deploy models on all existing engines (and kill currently running models if needed) |
 | Transport     | Kafka or TCP            | Default transport type to use for internal stream connections                                                                                                                                                  |
 | KafkaServers  | ["kafka:9092"]          | List of Kafka bootstrap servers (only applies if Transport is Kafka)                                                                                                                                           |
@@ -188,7 +188,7 @@ An explanation of the fields:
 
 {
 ConductorHost	https://conductor:8011	Host and port of Conductor.*
-Proxy	https://proxy:8000	Host and port of FastScore proxy.**
+Proxy	https://proxy:8000	Host and port of ModelOp Center proxy.**
 Mode	New, Idle, or Overwrite	
 New = create new engines for workflows;
 
@@ -211,7 +211,7 @@ Models:
          Model: <model asset in Manage>
          Engine:
              ID: <engine container id>
-             Name: <engine name in FastScore fleet>
+             Name: <engine name in ModelOp Center fleet>
              Image: <engine container image>
              Host: <engine host alias>
              Port: <engine port>

@@ -1,10 +1,10 @@
 ---
 title: "Conform and Deploy a Model"
-description: "This is a step by step guide for conforming and deploying a model in FastScore. It contains instructions for data scientists to prepare, deploy and test their model. This guide was last updated for v1.10 of FastScore.\n\nIf you need support or have questions, please email us:  [support@opendatagroup.com](mailto:support@opendatagroup.com)"
+description: "This is a step by step guide for conforming and deploying a model in ModelOp Center. It contains instructions for data scientists to prepare, deploy and test their model. This guide was last updated for v1.10 of ModelOp Center.\n\nIf you need support or have questions, please email us:  [support@opendatagroup.com](mailto:support@opendatagroup.com)"
 ---
 
 # How-to: Conform and Deploy a Model
-This is a step by step guide for conforming and deploying a model in FastScore. It contains instructions for data scientists to prepare, deploy and test their model. This guide was last updated for v1.10 of FastScore. 
+This is a step by step guide for conforming and deploying a model in ModelOp Center. It contains instructions for data scientists to prepare, deploy and test their model. This guide was last updated for v1.10 of ModelOp Center. 
 
 As we go, we will be referring to an example XGBoost model available in the `examples` branch of [this repo](https://github.com/opendatagroup/Getting-Started/tree/examples).
 
@@ -26,8 +26,8 @@ If you need support or have questions, please email us: support@opendatagroup.co
 ## <a name="Prerequisites"></a>Pre-requisites
 Before we walk through how to conform and deploy a model, we will need the following pre-requisites:
 
-1. [FastScore Environment Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/)
-2. [FastScore CLI Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/#installing-the-fastscore-cli)
+1. [ModelOp Center Environment Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/)
+2. [ModelOp Center CLI Installed](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/#installing-the-ModelO%20 Center-cli)
 3. [Example repo downloaded](https://github.com/opendatagroup/Getting-Started/tree/examples)
 
 This guide walks through a multi-class classification model that returns a probability vector of the species of iris based on four features: sepal length/width, petal length/width using the XGBoost framework. It is available in the repo above. 
@@ -44,7 +44,7 @@ make
 	
 
 ## <a name="model-deployment-package"></a>Defining Model Deployment Package
-FastScore provides several key assets for deploying and managing a model throughout the Model Lifecycle. As a Data Scientist, we define these abstractions for a robust deployment of our model that can evolve during the productionalization process without intensive input from the Data Scientist downstream.   
+ModelOp Center provides several key assets for deploying and managing a model throughout the Model Lifecycle. As a Data Scientist, we define these abstractions for a robust deployment of our model that can evolve during the productionalization process without intensive input from the Data Scientist downstream.   
 
 
 
@@ -53,15 +53,15 @@ FastScore provides several key assets for deploying and managing a model through
 | 1. Model Dependencies | Definition of the Runtime environment of the model with necessary dependencies for execution. |
 | 2. Schemas      | The definition of a Model’s type signature for inputs and outputs defined in Avro.                                              |
 |  3. Model Execution Script             | Model execution or prediction script that read input data from source, predicts, and writes output. |
-| 4. Attachments            | Binary objects, serialized model coefficients, or other artifacts from training that are required for model execution. FastScore pulls these attachments into a working directory upon deployment. |
+| 4. Attachments            | Binary objects, serialized model coefficients, or other artifacts from training that are required for model execution. ModelOp Center pulls these attachments into a working directory upon deployment. |
 | 5. Streams                | Definition of the data input/output that a model reads/writes from/to while executing.                |
 
 
 
 ## <a name="model-dependencies"></a>1. Model Dependencies
-FastScore Engine manages the deployment and running of the model within a Docker container. As part of the deployment process, we will need to build the dependencies for our model on top of the base FastScore Engine container.  This is a key piece for the Data Scientist to hand off to the Model Operations team to ensure the model can run downstream.  
+ModelOp Center Engine manages the deployment and running of the model within a Docker container. As part of the deployment process, we will need to build the dependencies for our model on top of the base ModelOp Center Engine container.  This is a key piece for the Data Scientist to hand off to the Model Operations team to ensure the model can run downstream.  
 
-For our XGBoost example, we will need to build in the dependencies into the FastScore Engine. The `examples` branch's docker-compose file points to the pre-built image on Dockerhub, but here are the steps to manually add them for your model. The image is defined using the Dockerfile and requirements.txt in `Getting-Started/requirements/xgboost_iris`. To build the image in the local repo, run `docker build -t localrepo/engine:xgboost .` within the directory. We can then modify the docker-compose.yaml to have Engine 1 utilize the new Engine and redeploy with `make`.
+For our XGBoost example, we will need to build in the dependencies into the ModelOp Center Engine. The `examples` branch's docker-compose file points to the pre-built image on Dockerhub, but here are the steps to manually add them for your model. The image is defined using the Dockerfile and requirements.txt in `Getting-Started/requirements/xgboost_iris`. To build the image in the local repo, run `docker build -t localrepo/engine:xgboost .` within the directory. We can then modify the docker-compose.yaml to have Engine 1 utilize the new Engine and redeploy with `make`.
 
 Here are the key components that define the image: 
 
@@ -109,9 +109,9 @@ Docker-compose.yaml
 The image is also avaiable on Dockerhub as `fastscore/engine:xgboost`.
 
 ## <a name="model-schema"></a>2. Defining Model Schema
-Next, we will define the Schemas for our input and output data. Schemata specify a “language-neutral type signature” for a model. We use these to define the handoff between the model and the data pipeline. Input/output data will be validated against the schema and rejected if it does not match, giving us visibility of issues between the model and the data pipeline. FastScore uses [Apache Avro](http://avro.apache.org/docs/current/) and they are defined in JSON files that are added to Model Manage. 
+Next, we will define the Schemas for our input and output data. Schemata specify a “language-neutral type signature” for a model. We use these to define the handoff between the model and the data pipeline. Input/output data will be validated against the schema and rejected if it does not match, giving us visibility of issues between the model and the data pipeline. ModelOp Center uses [Apache Avro](http://avro.apache.org/docs/current/) and they are defined in JSON files that are added to Model Manage. 
 
-With the FastScore CLI, we can infer the schema from a sample data record using the following command. 
+With the ModelOp Center CLI, we can infer the schema from a sample data record using the following command. 
 
 `fastscore schema infer <data-file>`
 
@@ -212,7 +212,7 @@ for df in slot0:
 		slot1.write(preds.iloc[j,:].to_dict())
 ```
 
-Here are the options for model annotations in FastScore to control the behavior of the model in FastScore:
+Here are the options for model annotations in ModelOp Center to control the behavior of the model in ModelOp Center:
 
 | Annotation              | Format                       | Description                                             |
 |-------------------------|------------------------------|---------------------------------------------------------|
@@ -222,9 +222,9 @@ Here are the options for model annotations in FastScore to control the behavior 
 | Module Attached         | `# fastscore.module-attached:<module-name>` | Disables the import policy checking for imported module |
 | Disable Schema Checking | `# fastscore.schema.:<slot #>: in-use`  | Used during testing to disable schema checking          |
 
-For our example, the first annotation designates we will not be using the 'call-back'-style conformance. Note: this model and guide focus on a new form of conformance that is released in Version 1.10. There is also the ability to use the 'call-back conformance' which utilizes `begin` and `action` functions instead of the `slot` object as shown in [this example](https://opendatagroup.github.io/Knowledge%20Center/Tutorials/Gradient%20Boosting%20Regressor/). Both will run within the latest versions of the FastScore Engine. 
+For our example, the first annotation designates we will not be using the 'call-back'-style conformance. Note: this model and guide focus on a new form of conformance that is released in Version 1.10. There is also the ability to use the 'call-back conformance' which utilizes `begin` and `action` functions instead of the `slot` object as shown in [this example](https://opendatagroup.github.io/Knowledge%20Center/Tutorials/Gradient%20Boosting%20Regressor/). Both will run within the latest versions of the ModelOp Center Engine. 
 
-Once we've defined this, we need to add the model execution script to FastScore with the following command:
+Once we've defined this, we need to add the model execution script to ModelOp Center with the following command:
 `fastscore model add <model-name> <source-file>`
 `fastscore model add xgboost_iris-py3 library/models/xgboost_iris.py3`
 
@@ -232,14 +232,14 @@ Once we've defined this, we need to add the model execution script to FastScore 
 ## <a name="attachments"></a>4. Attachments
 Attachments consist of external files to be utilized during prediction or scoring. The contents of the attachment get extracted into the current working directory of the model execution script.  Attachments will be tracked in Model Manage and Git if we're using the integration, so they are recommended to be less than 20MB. Larger artifacts can be added to the Engine via the Dockerfile. 
 
-In our example, we reference `xgboost_explicit.pkl` which is our trained model that we will use for predictions. FastScore will unpack the file in the working directory so the model can utilize it. To add it to FastScore, we upload it the model and add it to Model Manage with the following CLI command:
+In our example, we reference `xgboost_explicit.pkl` which is our trained model that we will use for predictions. ModelOp Center will unpack the file in the working directory so the model can utilize it. To add it to ModelOp Center, we upload it the model and add it to Model Manage with the following CLI command:
 
-`fastscore attachment upload <model-name> <file-to-attach>`.  
-`fastscore attachment upload xgboost_iris-py3 library/attachments/xgboost_explicit.tar.gz`
+`ModelOp Center attachment upload <model-name> <file-to-attach>`.  
+`ModelOp Center attachment upload xgboost_iris-py3 library/attachments/xgboost_explicit.tar.gz`
 
 
 ## <a name="streams"></a>5. Streams
-Streams in FastScore define the integration to our data pipeline. Streams will read records from the underlying transport, verify with the schema, and feed them to the model. The streams are defined via JSON document that controls behavior and connection. For this example, we will be deploying and testing the model as REST. 
+Streams in ModelOp Center define the integration to our data pipeline. Streams will read records from the underlying transport, verify with the schema, and feed them to the model. The streams are defined via JSON document that controls behavior and connection. For this example, we will be deploying and testing the model as REST. 
 
 In the next step, we will use the CLI to generate two arbitrary REST endpoints for testing the model. While the arbitrary REST endpoints are not realistic for Production, they are an extremely handy approach for quick testing. We can also define the REST stream as a JSON file to be added and tracked in Model Manage:
 ``
@@ -249,12 +249,12 @@ In the next step, we will use the CLI to generate two arbitrary REST endpoints f
 }
 ``
 
-```fastscore stream add <stream-name> <file-name>
-fastscore stream add rest library/streams/rest.json
+```ModelOp Center stream add <stream-name> <file-name>
+ModelOp Center stream add rest library/streams/rest.json
 ```
 
 ## <a name="Deploy-as-REST"></a>Deploy as REST
-Now that we have the Model Deployment Package defined and added to FastScore, it's time to deploy it in the Engine and test as REST. Using `rest:` for the streams in the run command will generate an endpoint for the input and output slots.  
+Now that we have the Model Deployment Package defined and added to ModelOp Center, it's time to deploy it in the Engine and test as REST. Using `rest:` for the streams in the run command will generate an endpoint for the input and output slots.  
 
 Generic commands for deploying model:
 ```
@@ -288,7 +288,7 @@ This model takes a minute to run, so give it a bit to run. Now we can see the ou
 
 `{"A": 0.0032884993124753237, "B": 0.004323431756347418, "C": 0.992388129234314}`
 
-Troubleshooting Tip: If the output command returns nothing, use `fastscore engine inspect` to see the state of the model. If it's in error, check the docker logs for an error message. At this stage, it's most likely an issue with the [Model Schema](#model-schema) rejecting the data or an issue with the [Model Execution Script](#model-execution-script).
+Troubleshooting Tip: If the output command returns nothing, use `ModelOp Center engine inspect` to see the state of the model. If it's in error, check the docker logs for an error message. At this stage, it's most likely an issue with the [Model Schema](#model-schema) rejecting the data or an issue with the [Model Execution Script](#model-execution-script).
 
 
 ## <a name="next-steps"></a>Next Steps
@@ -300,7 +300,7 @@ To continue learning, check out some additional examples here:
 
 Additionally, consult the detailed Product Reference documentation:
 - [Product Manuals](https://opendatagroup.github.io/)
-- [FastScore CLI Reference](https://opendatagroup.github.io/Reference/FastScore%20CLI)
-- [FastScore SDK Reference](https://opendatagroup.github.io/Reference/FastScore%20SDKs)
+- [ModelOp Center CLI Reference](https://opendatagroup.github.io/Reference/ModelOp%20Center%20CLI)
+- [ModelOp Center SDK Reference](https://opendatagroup.github.io/Reference/ModelOp%20Center%20SDKs)
 
 If you need support or have questions, please email us: support@opendatagroup.com

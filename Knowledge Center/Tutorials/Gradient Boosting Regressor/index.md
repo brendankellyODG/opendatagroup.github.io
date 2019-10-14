@@ -4,12 +4,12 @@ description: "Difficulty: Intermediate"
 ---
 # Gradient Boosting Regressor Example
 
-Gradient Boosting Regressors (GBR) are ensemble decision tree regressor models. In this example, we will show how to prepare a GBR model for use in FastScore. We'll be constructing a model to estimate the insurance risk of various automobiles. The data for this example is freely available from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Automobile).
+Gradient Boosting Regressors (GBR) are ensemble decision tree regressor models. In this example, we will show how to prepare a GBR model for use in ModelOp Center. We'll be constructing a model to estimate the insurance risk of various automobiles. The data for this example is freely available from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Automobile).
 
-The model will be constructed in Python using [SciKit Learn](http://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting), and both input and output data streams will use Kafka. This example demonstrates several features of FastScore:
+The model will be constructed in Python using [SciKit Learn](http://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting), and both input and output data streams will use Kafka. This example demonstrates several features of ModelOp Center:
 
-1. Running a trained Python model in FastScore
-2. Installing additional Python libraries in a FastScore engine
+1. Running a trained Python model in ModelOp Center
+2. Installing additional Python libraries in a ModelOp Center engine
 3. Using custom classes with model attachments
 4. Scoring records over Kafka streams
 
@@ -192,17 +192,17 @@ def score(record):
   return json.dumps(score)
 ```
 
-In fact, as we'll see below, this model can be adapted essentially without modification for running in FastScore.
+In fact, as we'll see below, this model can be adapted essentially without modification for running in ModelOp Center.
 
-## Loading the Model in FastScore
+## Loading the Model in ModelOp Center
 
-Loading our GBR model to FastScore can be broken into two steps: preparing the model code and creating the input and output streams.
+Loading our GBR model to ModelOp Center can be broken into two steps: preparing the model code and creating the input and output streams.
 
-### Preparing the model for FastScore
+### Preparing the model for ModelOp Center
 
 In the previous section, we created a small Python script to score our incoming auto records using the trained gradient boosting regressor and our custom feature transformer. In this example, the training of the model has already been done, so we'll only need to adapt the trained model to produce scores.
 
-As discussed in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/), Python models in FastScore must deliver scores using an `action` method. Note that the `action` method operates as a generator, so scores are obtained from `yield` statements, rather than `return` statements. Additionally, because we don't want to re-load our trained model with every score, we'll define a `begin` method to do all of the model initialization. If a model defines a `begin` method, this method will be called at the start of the job.
+As discussed in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp Center/), Python models in ModelOp Center must deliver scores using an `action` method. Note that the `action` method operates as a generator, so scores are obtained from `yield` statements, rather than `return` statements. Additionally, because we don't want to re-load our trained model with every score, we'll define a `begin` method to do all of the model initialization. If a model defines a `begin` method, this method will be called at the start of the job.
 
 After these alterations, our model looks like this:
 
@@ -228,16 +228,16 @@ def action(datum):
     yield score
 ```
 
-Let's briefly review what changes were made between this script (which is ready for scoring in FastScore) and our original one.
+Let's briefly review what changes were made between this script (which is ready for scoring in ModelOp Center) and our original one.
 
 * The input and output schemas have been specified in smart comments at the beginning of the model.
-* The `score` method has been renamed to `action`, and all JSON deserialization and serialization of the input and output records is taken care of automatically by FastScore.
+* The `score` method has been renamed to `action`, and all JSON deserialization and serialization of the input and output records is taken care of automatically by ModelOp Center.
 * The logic to load our pickled `gbmFit` object and any other initialization code is now put in a well-defined `begin` method, to be executed when the job starts.
 * Finally, because our custom class is contained in the attachment, we have to load it using Python's `imp` module (as opposed to `from FeatureTransformer import FeatureTransformer`).
 
 ### Input and Output Schemas
 
-FastScore uses AVRO schemas to enforce type validation on model inputs and outputs. Both input/output streams, as well as the models themselves, must specify schemas.
+ModelOp Center uses AVRO schemas to enforce type validation on model inputs and outputs. Both input/output streams, as well as the models themselves, must specify schemas.
 
 The input schema for our data is somewhat complicated because the input records contain many fields.
 
@@ -282,7 +282,7 @@ The output schema is much simpler---the output of the model will just be a doubl
 
 ### Input and Output Stream Descriptors
 
-One of the key features of FastScore is that it enforces strong type contracts on model inputs and outputs: a model's inputs are guaranteed to match the specified input format, as are its outputs. The input and output streams are described using stream descriptors. In this example, we'll be using Kafka to both send and receive scores.
+One of the key features of ModelOp Center is that it enforces strong type contracts on model inputs and outputs: a model's inputs are guaranteed to match the specified input format, as are its outputs. The input and output streams are described using stream descriptors. In this example, we'll be using Kafka to both send and receive scores.
 
 For the output stream, the stream descriptor is simple:
 [block:code]
@@ -313,22 +313,22 @@ The input stream descriptor includes the more complicated schema, encapsulating 
 }
 ```
 
-### Starting and Configuring FastScore
+### Starting and Configuring ModelOp Center
 
-This step may differ if you're using a custom FastScore deployment. If you're just using the  [standard deployment from the Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/), starting up FastScore is as easy as executing the following command:
+This step may differ if you're using a custom ModelOp Center deployment. If you're just using the  [standard deployment from the Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/), starting up ModelOp Center is as easy as executing the following command:
 
 ``` bash
 docker-compose up -d
 ```
 
-> The instructions above assume that you already have configured and are currently running a Kafka server set up with topics for the input and output streams, as well as the `notify` topic used by FastScore for asynchronous notifications.
+> The instructions above assume that you already have configured and are currently running a Kafka server set up with topics for the input and output streams, as well as the `notify` topic used by ModelOp Center for asynchronous notifications.
 > In the attached example code, we provide an additional docker-compose file (`kafka-compose.yml`) which will automatically start up Kafka docker containers configured for this example. Start the Kafka services from this docker-compose file with
 > ``` bash
 > docker-compose -f kafka-compose.yml up -d
 > ```
-> (You'll need to do this before starting FastScore).
+> (You'll need to do this before starting ModelOp Center).
 
-Once the FastScore containers are up and running, configure them via the CLI:
+Once the ModelOp Center containers are up and running, configure them via the CLI:
 
 ``` bash
 fastscore connect https://dashboard-host:8000
@@ -347,9 +347,9 @@ engine-1        engine        ok
 model-manage-1  model-manage  ok
 ```
 
-### Adding Packages to FastScore
+### Adding Packages to ModelOp Center
 
-The model code we've written uses the `pandas` and `sklearn` Python packages, which we'll need to add to the FastScore Engine container. (It also uses the `numpy` package, but this is installed in FastScore by default.)
+The model code we've written uses the `pandas` and `sklearn` Python packages, which we'll need to add to the ModelOp Center Engine container. (It also uses the `numpy` package, but this is installed in ModelOp Center by default.)
 
 To add new packages to the engine container, there are two steps:
 
@@ -363,7 +363,7 @@ docker-compose exec engine-1 pip install pandas
 docker-compose exec engine-1 pip install sklearn
 ```
 
-Next, add the novel packages our model uses to FastScore's `python.modules` list. (This list is used to check whether or not the current engine possesses the required dependencies for a model before attempting to run the model). The `python.modules` file is located inside of the engine container's file system at
+Next, add the novel packages our model uses to ModelOp Center's `python.modules` list. (This list is used to check whether or not the current engine possesses the required dependencies for a model before attempting to run the model). The `python.modules` file is located inside of the engine container's file system at
 
 ``` bash
 /root/engine/lib/engine-1.3/priv/runners/python/python.modules
@@ -397,7 +397,7 @@ You can call the attachment whatever you like---in the code sample, we've named 
 
 ### Adding the model and stream descriptors
 
-Now that we've created the model, stream descriptors, schemas, and attachment, it's time to add them to FastScore. This can be done through the command line, or using Dashboard.
+Now that we've created the model, stream descriptors, schemas, and attachment, it's time to add them to ModelOp Center. This can be done through the command line, or using Dashboard.
 
 From the command line, add the schemas and stream descriptors with
 
@@ -415,19 +415,19 @@ fastscore model add GBM score_auto_gbm.py
 fastscore attachment upload GBM gbm.tar.gz
 ```
 
-Steps for setting configuration through the Dashboard are covered in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20FastScore/#section-using-the-fastscore-dashboard).
+Steps for setting configuration through the Dashboard are covered in the [Getting Started Guide](https://opendatagroup.github.io/Getting%20Started/Getting%20Started%20with%20ModelOp%20Center/#section-using-the-ModelOp%20Center-dashboard).
 
-After adding the model, attachment, and streams to FastScore, you can inspect them from the FastScore Dashboard:
+After adding the model, attachment, and streams to ModelOp Center, you can inspect them from the ModelOp Center Dashboard:
 
 ![Dashboard GBM](images/dashboard-gbm-1.png)
 
-*The GBR model in FastScore's Dashboard.*
+*The GBR model in ModelOp Center's Dashboard.*
 
 ## Delivering Scores using Kafka
 
-The final step is to run the model, and deliver input records and output scores with Kafka. Kafka producers and consumers can be implemented in many languages. In the example code attached to this tutorial, we include a simple Scala Kafka client (`kafkaesq`), which streams the contents of a file line-by-line over a specified input topic, and then prints any responses received on a specified output topic. However, FastScore is compatible with any implementation of Kafka producer/consumer.
+The final step is to run the model, and deliver input records and output scores with Kafka. Kafka producers and consumers can be implemented in many languages. In the example code attached to this tutorial, we include a simple Scala Kafka client (`kafkaesq`), which streams the contents of a file line-by-line over a specified input topic, and then prints any responses received on a specified output topic. However, ModelOp Center is compatible with any implementation of Kafka producer/consumer.
 
-After FastScore is configured, we're ready to start scoring. Start the job from the CLI with
+After ModelOp Center is configured, we're ready to start scoring. Start the job from the CLI with
 
 ``` bash
 fastscore job run GBM GBM-in GBM-out
@@ -443,7 +443,7 @@ And that's it! Once you're done, stop the job with `fastscore job stop`.
 
 ## Source code for this Example
 
-[Download the source files for this example (GBM_example.tar.gz).](https://github.com/opendatagroup/fastscore-tutorials/raw/master/GBM_example.tar.gz)
+[Download the source files for this example (GBM_example.tar.gz).](https://github.com/opendatagroup/ModelOp Center-tutorials/raw/master/GBM_example.tar.gz)
 
 This archive contains all of the code used in this example.
 
@@ -452,5 +452,5 @@ This archive contains all of the code used in this example.
 1. [SciKit-Learn: Gradient Tree Boosting](http://scikit-learn.org/stable/modules/ensemble.html#gradient-boosting)
 2. [Wikipedia: Gradient Boosting](https://en.wikipedia.org/wiki/Gradient_boosting)
 3. [J. Friedman: "Greedy Function Approximation: A Gradient Boosting Machine"](https://statweb.stanford.edu/~jhf/ftp/trebst.pdf)
-4. [FastScore DockerHub repository](http://hub.docker.com/u/fastscore/)
+4. [ModelOp Center DockerHub repository](http://hub.docker.com/u/fastscore/)
 5. [Automotive Sample Dataset](https://archive.ics.uci.edu/ml/datasets/Automobile)

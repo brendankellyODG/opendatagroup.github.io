@@ -16,7 +16,7 @@ A sensor is a configurable function that:
 * Has a language-agnostic descriptor
 * May output cost-related information
 
-Examples of potential uses for sensors include record/byte counters at the edge of an input stream, CPU utilization measurements for the main process, or a memory usage gauge for model runners. Some sensors are added to a FastScore microservice by default, e.g., the memory usage monitor present in Dashboard. 
+Examples of potential uses for sensors include record/byte counters at the edge of an input stream, CPU utilization measurements for the main process, or a memory usage gauge for model runners. Some sensors are added to a ModelOp Center microservice by default, e.g., the memory usage monitor present in Dashboard. 
 
 ## Sensor Descriptors
 
@@ -65,7 +65,7 @@ Note that the filter values `Threshold`, `MinValue`, and `MaxValue` accept human
 
 ## An Example
 
-Let's add the sensor example above to FastScore. We can do this using the CLI:
+Let's add the sensor example above to ModelOp Center. We can do this using the CLI:
 ```
 fastscore sensor add s1 <<EOF
 {
@@ -99,7 +99,7 @@ $ fastscore tap list model-manage-1
    2  sys.memory  No
 ```
 
-The sensor activates periodically (2 times a second), and collects the memory consumed by the service. The collected data is reported as Pneumo messages (Kafka messages on the topic "notify") every 3 seconds. These can be viewed in the CLI with the `fastscore pneumo` command:
+The sensor activates periodically (2 times a second), and collects the memory consumed by the service. The collected data is reported as Pneumo messages (Kafka messages on the topic "notify") every 3 seconds. These can be viewed in the CLI with the `ModelOp Center pneumo` command:
 
 ```
 $ fastscore pneumo
