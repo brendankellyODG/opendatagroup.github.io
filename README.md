@@ -1,4 +1,4 @@
-# opendatagroup.github.io
+# modelop.github.io/
 Public-facing ODG documentation
 
 Setting up your machine to test documentation locally

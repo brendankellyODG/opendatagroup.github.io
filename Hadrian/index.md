@@ -35,8 +35,8 @@ This wiki provides documentation for the Hadrian ecosystem of tools.
 
 **Hadrian** is a complete implementation of PFA in **Scala**, which can be accessed through any JVM language, principally **Java**. It focuses on model deployment, so it is flexible (can run in restricted environments) and fast.
 
-   * [Complete API reference](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) (Scaladoc)
-   * [Performance table](http://opendatagroup.github.io/hadrian/hadrian-0.8.1-performance/)
+   * [Complete API reference](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) (Scaladoc)
+   * [Performance table](http://modelop.github.io//hadrian/hadrian-0.8.1-performance/)
    * Using Hadrian directly
      * [Loading, validating, and executing PFA](Hadrian-Basic-Use) on the Scala command prompt
      * [Hadrian's internal data format and serialization](Hadrian-Data-Format)
@@ -58,7 +58,7 @@ This wiki provides documentation for the Hadrian ecosystem of tools.
 
 **Titus** is a complete, independent implementation of PFA in pure **Python**. It focuses on model development, so it includes model producers and PFA manipulation tools in addition to runtime execution.
 
-   * [Complete API reference](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.genpy.PFAEngine.html) (Sphinx)
+   * [Complete API reference](http://modelop.github.io//hadrian/titus-0.8.3/titus.genpy.PFAEngine.html) (Sphinx)
    * [Loading, validating, and executing PFA](Titus-Basic-Use) on the Python command prompt
    * PFA development tools
      * PrettyPFA is a more human-readable syntax that converts into PFA: use this to write PFA "code"

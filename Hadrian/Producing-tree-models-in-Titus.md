@@ -58,7 +58,7 @@ decisionTree = cart.TreeNode.fromWholeDataset(dataset, predictandName="mpg")
 
 The tree has been declared, but it currently contains only one node, a single leaf pointing to all of the data. To perform tree-based learning, we must recursively split the data in such a way as to maximize a gain term.
 
-The default gain terms are given by the following methods of the [`cart.TreeNode`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.cart.TreeNode.html) class, which can be overridden by a subclass.
+The default gain terms are given by the following methods of the [`cart.TreeNode`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.cart.TreeNode.html) class, which can be overridden by a subclass.
 
    * string-valued predictand (decision tree), string-valued regressor: ``categoricalEntropyGainTerm``
    * string-valued predictand (decision tree), numerical regressor: ``numericalEntropyGainTerm``

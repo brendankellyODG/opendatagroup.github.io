@@ -1,6 +1,6 @@
 ## Analyzing a PFA engine
 
-After loading a PFA file, Hadrian provides a list of [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) instances. Because of intentional restrictions in the PFA language, a lot of useful information is available about the algorithm it represents without running it.
+After loading a PFA file, Hadrian provides a list of [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) instances. Because of intentional restrictions in the PFA language, a lot of useful information is available about the algorithm it represents without running it.
 
 The [Hadrian Basic Use](https://github.com/opendatagroup/hadrian/wiki/Hadrian-Basic-Use) page describes how to create a `PFAEngine`, execute it, take snapshots and revert its state, and look at or convert its Abstract Syntax Tree (AST). This page explains how to statically analyze the `PFAEngine` without executing it.
 
@@ -39,7 +39,7 @@ All of the persistent state of a PFA scoring engine (mutable or immutable) is co
 
 Hadrian can also track memory use of a running PFA engine. General Java tools exist for tracking the total memory used by a JVM or the memory used by specific classes, but neither of these provide granularity at the level of a PFA engine, which consists of many classes and not the whole JVM.
 
-[`com.opendatagroup.hadrian.memory.EngineReport`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.memory.EngineReport) provides an analysis of the memory used by one `PFAEngine`'s persistent state, and [`com.opendatagroup.hadrian.memory.EnginesReport`](http://opendatagroup.github.io/hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.memory.EnginesReport) provides an analysis of memory used by a collection of `PFAEngine` instances that may share memory.
+[`com.opendatagroup.hadrian.memory.EngineReport`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.memory.EngineReport) provides an analysis of the memory used by one `PFAEngine`'s persistent state, and [`com.opendatagroup.hadrian.memory.EnginesReport`](http://modelop.github.io//hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.memory.EnginesReport) provides an analysis of memory used by a collection of `PFAEngine` instances that may share memory.
 
 Here is how to use them on `engine` (an instance of `PFAEngine`) and `engines` (a Scala collection of `PFAEngine` instances):
 

@@ -4,7 +4,7 @@ Often, you want a PFA scoring engine to exactly reproduce the preprocessing (or 
 
 PFA preprocessing steps are expressed using PFA functions, but the model producer may use its own language to express them. If you're building models in Python/Numpy, you're probably preprocessing the training data as Python lists or Numpy arrays.
 
-The [`titus.producer.transformation.Transformation`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.transformation.Transformation.html) class is intended to help coordinate offline (producer) transformations in Python/Numpy with online (scoring) transformations in PFA.
+The [`titus.producer.transformation.Transformation`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.transformation.Transformation.html) class is intended to help coordinate offline (producer) transformations in Python/Numpy with online (scoring) transformations in PFA.
 
 ## Before you begin...
 
@@ -55,7 +55,7 @@ But any transformation from the N column input to an M column output is possible
 
     >>> t2 = Transformation("_0**2 + _1 * m.sin(_2)", "_0**2 + _1 * m.cos(_2)")
 
-Strings are parsed as [PrettyPFA](PrettyPFA-Reference), though an expression built from PFA AST instances (e.g. built using [`titus.reader.jsonToAst`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.reader.jsonToAst.html) or [`titus.reader.yamlToAst`](http://opendatagroup.github.io/hadrian/titus-0.8.1/titus.reader.yamlToAst.html)) would also work.
+Strings are parsed as [PrettyPFA](PrettyPFA-Reference), though an expression built from PFA AST instances (e.g. built using [`titus.reader.jsonToAst`](http://modelop.github.io//hadrian/titus-0.8.3/titus.reader.jsonToAst.html) or [`titus.reader.yamlToAst`](http://modelop.github.io//hadrian/titus-0.8.1/titus.reader.yamlToAst.html)) would also work.
 
 Expressions using named columns are somewhat easier to read.
 

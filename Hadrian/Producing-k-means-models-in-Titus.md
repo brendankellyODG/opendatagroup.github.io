@@ -24,7 +24,7 @@ Learn about [k-means clustering](http://en.wikipedia.org/wiki/K-means_clustering
 
 Let's do the most straightforward example first.
 
-A k-means fit is performed using a [`KMeans`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.KMeans.html) object.  It is constructed from a number of clusters (k = 3 for our example) and a Numpy dataset whose first index runs over points (150 in our example) and whose second index runs over dimensions (4 in our example).
+A k-means fit is performed using a [`KMeans`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.KMeans.html) object.  It is constructed from a number of clusters (k = 3 for our example) and a Numpy dataset whose first index runs over points (150 in our example) and whose second index runs over dimensions (4 in our example).
 
     >>> kmeans = k.KMeans(3, np_iris)
 
@@ -139,16 +139,16 @@ Metrics are built this way to provide more opportunities for code reuse: similar
 
 The built-in similarity classes are:
 
-  * [`k.AbsDiff()`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.AbsDiff.html): absolute difference.
-  * [`k.GaussianSimilarity(sigma)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.GaussianSimilarity.html): difference that approaches zero as cluster and data become more *different*.  The expression is `exp(-ln(2) * (x - y)**2 / sigma**2)`.
+  * [`k.AbsDiff()`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.AbsDiff.html): absolute difference.
+  * [`k.GaussianSimilarity(sigma)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.GaussianSimilarity.html): difference that approaches zero as cluster and data become more *different*.  The expression is `exp(-ln(2) * (x - y)**2 / sigma**2)`.
 
 The built-in metric classes are:
 
-  * [`k.Euclidean(similarity)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.Euclidean.html): square root of the sum of squares.
-  * [`k.SquaredEuclidean(similarity)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.SquaredEuclidean.html): sum of squares.  For most applications, this is equivalent to Euclidean, but does not involve a square root in its calculation.
-  * [`k.Chebyshev(similarity)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.Chebyshev.html): the maximum of component-wise differences.
-  * [`k.Taxicab(similarity)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.Taxicab.html): the sum of component-wise differences.
-  * [`k.Minkowski(similarity, p)`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.producer.kmeans.Minkowski.html): component-wise differences raised to the `p` power, summed, and the sum is raised to the `1/p` power.  The expression is `sum((x - y)**p)**(1/p)`.
+  * [`k.Euclidean(similarity)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.Euclidean.html): square root of the sum of squares.
+  * [`k.SquaredEuclidean(similarity)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.SquaredEuclidean.html): sum of squares.  For most applications, this is equivalent to Euclidean, but does not involve a square root in its calculation.
+  * [`k.Chebyshev(similarity)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.Chebyshev.html): the maximum of component-wise differences.
+  * [`k.Taxicab(similarity)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.Taxicab.html): the sum of component-wise differences.
+  * [`k.Minkowski(similarity, p)`](http://modelop.github.io//hadrian/titus-0.8.3/titus.producer.kmeans.Minkowski.html): component-wise differences raised to the `p` power, summed, and the sum is raised to the `1/p` power.  The expression is `sum((x - y)**p)**(1/p)`.
 
 ## Better starting conditions
 

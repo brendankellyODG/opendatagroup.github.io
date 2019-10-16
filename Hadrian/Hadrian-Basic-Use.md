@@ -42,15 +42,15 @@ scala> val engine = PFAEngine.fromYaml("""
 engine: com.opendatagroup.hadrian.jvmcompiler.PFAEngine[AnyRef,AnyRef] = PFA_Engine_2@53e211ee
 ```
 
-Note in both cases that we asked for the `.head` of what `PFAEngine.fromJson` and `PFAEngine.fromYaml` produces. In general, these functions produce a collection of [`PFAEngine`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) objects from one PFA file (pass `multiplicity = 4` and drop `.head` to see that). These scoring engines can run in parallel and share memory. For now, though, we're only interested in one scoring engine.
+Note in both cases that we asked for the `.head` of what `PFAEngine.fromJson` and `PFAEngine.fromYaml` produces. In general, these functions produce a collection of [`PFAEngine`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) objects from one PFA file (pass `multiplicity = 4` and drop `.head` to see that). These scoring engines can run in parallel and share memory. For now, though, we're only interested in one scoring engine.
 
 By virtue of having created an engine, the PFA has been fully validated. If the PFA is not valid, you would see
 
    * a [Jackson](http://wiki.fasterxml.com/JacksonDocumentation) exception because the JSON wasn't valid;
    * a [SnakeYAML](https://code.google.com/p/snakeyaml/wiki/Documentation) exception because the YAML wasn't valid;
-   * [`PFASyntaxException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFASyntaxException) if Hadrian could not build an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) of the PFA from the JSON, for instance if a JSON field name is misspelled;
-   * [`PFASemanticException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFASemanticException) if Hadrian could not build Java bytecode from the AST, for instance if data types don't match;
-   * [`PFAInitializationException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFAInitializationException) if Hadrian could not create a scoring engine instance, for instance if the cell/pool data are incorrectly formatted.
+   * [`PFASyntaxException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFASyntaxException) if Hadrian could not build an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) of the PFA from the JSON, for instance if a JSON field name is misspelled;
+   * [`PFASemanticException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFASemanticException) if Hadrian could not build Java bytecode from the AST, for instance if data types don't match;
+   * [`PFAInitializationException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFAInitializationException) if Hadrian could not create a scoring engine instance, for instance if the cell/pool data are incorrectly formatted.
 
 Now run the scoring engine on some sample input:
 
@@ -63,9 +63,9 @@ For Java accessibility, the `action` method takes and returns boxed values of ty
 
 You should only ever see one of the following exceptions at runtime
 
-   * [`PFARuntimeException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFARuntimeException) if a PFA library function encountered an exceptional case, such as `a.max` of an empty list.
-   * [`PFAUserException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFAUserException) if the PFA has explicit `{"error": "my error message"}` directives.
-   * [`PFATimeoutException`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFATimeoutException) if the PFA has some `"options": {"timeout": 1000}` set and a calculation takes too long.
+   * [`PFARuntimeException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFARuntimeException) if a PFA library function encountered an exceptional case, such as `a.max` of an empty list.
+   * [`PFAUserException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFAUserException) if the PFA has explicit `{"error": "my error message"}` directives.
+   * [`PFATimeoutException`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.errors.PFATimeoutException) if the PFA has some `"options": {"timeout": 1000}` set and a calculation takes too long.
 
 ### Emit-type engines
 
@@ -283,7 +283,7 @@ res8: AnyRef = [104, 103, 102, 101, 100, 0]
 
 ### Abstract Syntax Tree
 
-The PFA AST is an immutable tree structure built from the serialized JSON, stored in `engine.config`, which is an [`EngineConfig`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.ast.EngineConfig). You can query anything about the original PFA file in a structured way through this AST. For instance,
+The PFA AST is an immutable tree structure built from the serialized JSON, stored in `engine.config`, which is an [`EngineConfig`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.ast.EngineConfig). You can query anything about the original PFA file in a structured way through this AST. For instance,
 
 ```scala
 scala> engine.config.action.head

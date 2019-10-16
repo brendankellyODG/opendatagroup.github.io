@@ -22,7 +22,7 @@ The `titus.pmml.reader` module has several functions for converting PMML:
 
    * `pmmlToJson` returns a JSON string, already serialized and ready for transmission
    * `pmmlToNode` returns a Python structure representing the JSON, which is more convenient for examination and manipulation
-   * `pmmlToAst` returns an [EngineConfig](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html#titus.pfaast.EngineConfig) (PFA abstract syntax tree), which is convenient for context-sensitive traversals or transformations.
+   * `pmmlToAst` returns an [EngineConfig](http://modelop.github.io//hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html#titus.pfaast.EngineConfig) (PFA abstract syntax tree), which is convenient for context-sensitive traversals or transformations.
 
 ## Trivial PMML document
 

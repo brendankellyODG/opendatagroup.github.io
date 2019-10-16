@@ -14,20 +14,20 @@ However, data has to be represented in some form for processing by PFA functions
 | double | [`java.lang.Double`](http://docs.oracle.com/javase/7/docs/api/java/lang/Double.html) |
 | string | Java [`String`](http://docs.oracle.com/javase/7/docs/api/java/lang/String.html) |
 | bytes | Java array of bytes |
-| array | [`com.opendatagroup.hadrian.data.PFAArray[T]`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAArray) |
-| map | [`com.opendatagroup.hadrian.data.PFAMap[T]`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAMap) |
-| record | subclass of [`com.opendatagroup.hadrian.data.PFARecord`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAMap) |
-| fixed | subclass of [`com.opendatagroup.hadrian.data.PFAFixed`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAFixed) |
-| enum | subclass of [`com.opendatagroup.hadrian.data.PFAEnumSymbols`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAEnumSymbols) |
+| array | [`com.opendatagroup.hadrian.data.PFAArray[T]`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAArray) |
+| map | [`com.opendatagroup.hadrian.data.PFAMap[T]`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAMap) |
+| record | subclass of [`com.opendatagroup.hadrian.data.PFARecord`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAMap) |
+| fixed | subclass of [`com.opendatagroup.hadrian.data.PFAFixed`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAFixed) |
+| enum | subclass of [`com.opendatagroup.hadrian.data.PFAEnumSymbols`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFAEnumSymbols) |
 | union | Java Object (`AnyRef`) |
 
-Input to a scoring engine's `action` method must be of this form, and output from that method will be of this form. This is not the format that the Avro library produces when you deserialize an Avro file (Hadrian uses a custom [`org.apache.avro.specific.SpecificData`](https://avro.apache.org/docs/1.7.7/api/java/org/apache/avro/specific/SpecificData.html) called [`com.opendatagroup.hadrian.data.PFASpecificData`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFASpecificData)). However, it is a format that can be passed directly to the Avro library to serialize an Avro file.
+Input to a scoring engine's `action` method must be of this form, and output from that method will be of this form. This is not the format that the Avro library produces when you deserialize an Avro file (Hadrian uses a custom [`org.apache.avro.specific.SpecificData`](https://avro.apache.org/docs/1.7.7/api/java/org/apache/avro/specific/SpecificData.html) called [`com.opendatagroup.hadrian.data.PFASpecificData`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFASpecificData)). However, it is a format that can be passed directly to the Avro library to serialize an Avro file.
 
 ### Specialized subclasses
 
-Three of the above, `PFARecord`, `PFAFixed`, and `PFAEnumSymbols` are compiled specifically for each PFA engine class. (If you run the `fromJson` method of [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine$) with `multiplicity > 1`, all of the scoring engines returned share the same class; if you run it multiple times, the scoring engines belong to different classes.) You must use the right subclass. Since these subclasses are compiled at runtime, they must be accessed through a special [`java.lang.ClassLoader`](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html).
+Three of the above, `PFARecord`, `PFAFixed`, and `PFAEnumSymbols` are compiled specifically for each PFA engine class. (If you run the `fromJson` method of [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine$) with `multiplicity > 1`, all of the scoring engines returned share the same class; if you run it multiple times, the scoring engines belong to different classes.) You must use the right subclass. Since these subclasses are compiled at runtime, they must be accessed through a special [`java.lang.ClassLoader`](http://docs.oracle.com/javase/7/docs/api/java/lang/ClassLoader.html).
 
-Here is an example of creating a `PFARecord` for a given `engine` (of class [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine)) and a `recordType` (of class [`com.opendatagroup.hadrian.datatype.AvroRecord`](http://opendatagroup.github.io/hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.datatype.AvroRecord)). Assume that the fields of this record have already been converted into the appropriate types and are stored, in field order, in an array of Objects called `fieldData`.
+Here is an example of creating a `PFARecord` for a given `engine` (of class [`com.opendatagroup.hadrian.jvmcompiler.PFAEngine`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine)) and a `recordType` (of class [`com.opendatagroup.hadrian.datatype.AvroRecord`](http://modelop.github.io//hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.datatype.AvroRecord)). Assume that the fields of this record have already been converted into the appropriate types and are stored, in field order, in an array of Objects called `fieldData`.
 
 ```scala
 val recordTypeName = recordType.fullName
@@ -39,7 +39,7 @@ constructor.newInstance(fieldData)
 
 Only the last line needs to be executed at runtime; the rest can be saved from an initialization phase. In fact, calling `constructor.setAccessible(true)` can speed up `constructor.newInstance(fieldData)` by skipping access checks at runtime.
 
-Here is an example of creating a `PFAFixed` from a given `engine` (of class `PFAEngine`) and a `fixedType` (of class [`com.opendatagroup.hadrian.datatype.AvroFixed`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroFixed)). Assume that the data is stored as an array of byte primitives called `bytesData`.
+Here is an example of creating a `PFAFixed` from a given `engine` (of class `PFAEngine`) and a `fixedType` (of class [`com.opendatagroup.hadrian.datatype.AvroFixed`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroFixed)). Assume that the data is stored as an array of byte primitives called `bytesData`.
 
 ```scala
 val fixedTypeName = fixedType.fullName
@@ -49,7 +49,7 @@ val constructor = subclass.getConstructor(classOf[Array[Byte]])
 constructor.newInstance(bytesData)
 ```
 
-Here is an example of creating a `PFAEnumSymbol` from a given `engine` (of class `PFAEngine`) and an `enumType` (of class [`com.opendatagroup.hadrian.datatype.AvroEnum`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroEnum)). Assume that the data is given as a string called `symbolName`.
+Here is an example of creating a `PFAEnumSymbol` from a given `engine` (of class `PFAEngine`) and an `enumType` (of class [`com.opendatagroup.hadrian.datatype.AvroEnum`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroEnum)). Assume that the data is given as a string called `symbolName`.
 
 ```scala
 val enumTypeName = enumType.fullName
@@ -69,7 +69,7 @@ PFAArray.fromVector(v)
 PFAMap.fromMap(m)
 ```
 
-However, they can also be constructed using in-place operations using the Java interfaces (`sizeHint` is an integer hint for preallocation and `arrayType`, `mapType` are instances of [`com.opendatagroup.hadrian.datatype.AvroArray`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroArray) and [`com.opendatagroup.hadrian.datatype.AvroMap`](http://opendatagroup.github.io/hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.datatype.AvroMap)):
+However, they can also be constructed using in-place operations using the Java interfaces (`sizeHint` is an integer hint for preallocation and `arrayType`, `mapType` are instances of [`com.opendatagroup.hadrian.datatype.AvroArray`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.datatype.AvroArray) and [`com.opendatagroup.hadrian.datatype.AvroMap`](http://modelop.github.io//hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.datatype.AvroMap)):
 
 ```scala
 val array = PFAArray.empty(sizeHint, arrayType.schema)
@@ -89,7 +89,7 @@ Additionally, `PFAArray[T]` has a mutable `metadata` field (of type `Map[String,
 
 ### Example translators
 
-Hadrian has a few built-in translator routines, which translate data from a form appropriate for one engine class to another engine class ([`com.opendatagroup.hadrian.data.PFADataTranslator`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFADataTranslator)), from data deserialized by the Avro library to data appropriate for an engine class ([`com.opendatagroup.hadrian.data.AvroDataTranslator`](http://opendatagroup.github.io/hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.data.AvroDataTranslator)), and to and from Scala code ([`com.opendatagroup.hadrian.data.ScalaDataTranslator`](http://opendatagroup.github.io/hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.data.ScalaDataTranslator)). All three minimize the effort needed to translate at runtime by saving constructors and skipping unnecessary translations (for example, from `java.lang.Integer` to `java.lang.Integer` or arrays of these, etc.).
+Hadrian has a few built-in translator routines, which translate data from a form appropriate for one engine class to another engine class ([`com.opendatagroup.hadrian.data.PFADataTranslator`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.PFADataTranslator)), from data deserialized by the Avro library to data appropriate for an engine class ([`com.opendatagroup.hadrian.data.AvroDataTranslator`](http://modelop.github.io//hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.data.AvroDataTranslator)), and to and from Scala code ([`com.opendatagroup.hadrian.data.ScalaDataTranslator`](http://modelop.github.io//hadrian/hadrian-0.8.1/index.html#com.opendatagroup.hadrian.data.ScalaDataTranslator)). All three minimize the effort needed to translate at runtime by saving constructors and skipping unnecessary translations (for example, from `java.lang.Integer` to `java.lang.Integer` or arrays of these, etc.).
 
 Antinous also has translator routines, which translate from PFA to Jython ([`com.opendatagroup.antinous.translate.PFAToJythonDataTranslator`](https://github.com/opendatagroup/hadrian/blob/0.8.3/antinous/src/main/scala/com/opendatagroup/antinous/translate.scala#L74)), the reverse ([`com.opendatagroup.antinous.translate.JythonToPFADataTranslator`](https://github.com/opendatagroup/hadrian/blob/0.8.1/antinous/src/main/scala/com/opendatagroup/antinous/translate.scala#L407)), and data deserialized by the Avro library to Jython ([`com.opendatagroup.antinous.translate.AvroToJythonDataTranslator`](https://github.com/opendatagroup/hadrian/blob/0.8.1/antinous/src/main/scala/com/opendatagroup/antinous/translate.scala#L244)). They follow the same pattern as Hadrian's translators, but additionally have to deal with the problem of grafting the Avro type system onto Python's built-in type system.
 
@@ -109,7 +109,7 @@ The specific methods are all member functions of the `PFAEngine` class. The resu
    * `fromPFAData` is a specialized `PFADataTranslator` attached to the `PFAEngine`. Use this to convert data from one scoring engine's output to another's input (i.e. chaining models).
    * `fromGenericAvroData` is a specialized `AvroDataTranslator` attached to the `PFAEngine`. Use this to convert data deserialized by the Avro library into data that can be sent to `action`.
 
-The following functions are generic, not associated with any PFA engine class. To use them for input, be sure to run the data through the specific PFA engine's `PFAEngine.fromPFAData` first. Any can be used for output. They are all in the [`com.opendatagroup.hadrian.data`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.package) package.
+The following functions are generic, not associated with any PFA engine class. To use them for input, be sure to run the data through the specific PFA engine's `PFAEngine.fromPFAData` first. Any can be used for output. They are all in the [`com.opendatagroup.hadrian.data`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.data.package) package.
 
    * `fromJson` converts one datum from a complete JSON document.
    * `fromAvro` converts one datum from Avro (as part of a stream or an RPC call, not an Avro file with header).

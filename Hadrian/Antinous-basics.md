@@ -269,7 +269,7 @@ What you cannot load, however, are any natively compiled extensions for the C im
 
 ## JythonEngine in Scala code
 
-To access Antinous in Scala code (to make an Antinous-aware Hadrian application, for instance), find the `JythonEngine` class in package `com.opendatagroup.antinous.engine`. This class satisfies the [`PFAEngine`](http://opendatagroup.github.io/hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) interface so that it can run anywhere a `PFAEngine` can run. PFA methods that don't make sense for Jython (such as `callGraph`, `snapshot`, anything involving cells or pools) simply raise `NotImplementedError`.
+To access Antinous in Scala code (to make an Antinous-aware Hadrian application, for instance), find the `JythonEngine` class in package `com.opendatagroup.antinous.engine`. This class satisfies the [`PFAEngine`](http://modelop.github.io//hadrian/hadrian-0.8.3/index.html#com.opendatagroup.hadrian.jvmcompiler.PFAEngine) interface so that it can run anywhere a `PFAEngine` can run. PFA methods that don't make sense for Jython (such as `callGraph`, `snapshot`, anything involving cells or pools) simply raise `NotImplementedError`.
 
 The `JythonEngine` companion object ("static methods" for the `JythonEngine` class) include
 

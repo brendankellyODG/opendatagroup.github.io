@@ -39,9 +39,9 @@ By virtue of having created an engine, the PFA has been fully validated. If the 
 
    * a `ValueError` because the JSON wasn't valid;
    * a `yaml.scanner.ScannerError` because the YAML wan't valid;
-   * [`PFASyntaxException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFASyntaxException.html) if Titus could not build an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) of the PFA from the JSON, for instance if a JSON field name is misspelled;
-   * [`PFASemanticException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFASemanticException.html) if Titus could not build Python code from the AST, for instance if data types don't match;
-   * [`PFAInitializationException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFAInitializationException.html) if Titus could not create a scoring engine instance, for instance if the cell/pool data are incorrectly formatted.
+   * [`PFASyntaxException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFASyntaxException.html) if Titus could not build an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) of the PFA from the JSON, for instance if a JSON field name is misspelled;
+   * [`PFASemanticException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFASemanticException.html) if Titus could not build Python code from the AST, for instance if data types don't match;
+   * [`PFAInitializationException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFAInitializationException.html) if Titus could not create a scoring engine instance, for instance if the cell/pool data are incorrectly formatted.
 
 Now run the scoring engine on some sample input:
 
@@ -52,9 +52,9 @@ Now run the scoring engine on some sample input:
 
 You should only ever see one of the following exceptions at runtime
 
-   * [`PFARuntimeException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFARuntimeException.html) if a PFA library function encountered an exceptional case, such as `a.max` of an empty list.
-   * [`PFAUserException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFAUserException.html) if the PFA has explicit `{"error": "my error message"}` directives.
-   * [`PFATimeoutException`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.errors.PFATimeoutException.html) if the PFA has some `"options": {"timeout": 1000}` set and a calculation takes too long.
+   * [`PFARuntimeException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFARuntimeException.html) if a PFA library function encountered an exceptional case, such as `a.max` of an empty list.
+   * [`PFAUserException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFAUserException.html) if the PFA has explicit `{"error": "my error message"}` directives.
+   * [`PFATimeoutException`](http://modelop.github.io//hadrian/titus-0.8.3/titus.errors.PFATimeoutException.html) if the PFA has some `"options": {"timeout": 1000}` set and a calculation takes too long.
 
 ### Emit-type engines
 
@@ -168,7 +168,7 @@ EngineConfig(name=Engine_3,
     options={})
 ```
 
-To get the values, dig into the [`EngineConfig`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html) object to get the `init` of the relevant cell or pool. Then use `json.loads` to convert the serialized form into an object.
+To get the values, dig into the [`EngineConfig`](http://modelop.github.io//hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html) object to get the `init` of the relevant cell or pool. Then use `json.loads` to convert the serialized form into an object.
 
 ```python
 >>> json.loads(engine4.snapshot().cells["history"].init)
@@ -177,7 +177,7 @@ To get the values, dig into the [`EngineConfig`](http://opendatagroup.github.io/
 
 ### Abstract Syntax Tree
 
-The PFA AST is an immutable tree structure built from the serialized JSON, stored in `engine.config`, which is an [`EngineConfig`](http://opendatagroup.github.io/hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html). You can query anything about the original PFA file in a structured way through this AST. For instance,
+The PFA AST is an immutable tree structure built from the serialized JSON, stored in `engine.config`, which is an [`EngineConfig`](http://modelop.github.io//hadrian/titus-0.8.3/titus.pfaast.EngineConfig.html). You can query anything about the original PFA file in a structured way through this AST. For instance,
 
 ```python
 >>> engine.config.action[0]
